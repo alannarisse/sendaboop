@@ -1,0 +1,96 @@
+import { View, Image, Pressable, StyleSheet, Text } from 'react-native';
+import { dogs, Dog } from '@/lib/dogs';
+
+interface DogSelectorProps {
+  selectedDogId: string | null;
+  onSelectDog: (dog: Dog) => void;
+}
+
+export function DogSelector({ selectedDogId, onSelectDog }: DogSelectorProps) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Pick a pup to send:</Text>
+      <View style={styles.grid}>
+        {dogs.map((dog) => (
+          <Pressable
+            key={dog.id}
+            style={[
+              styles.imageContainer,
+              selectedDogId === dog.id && styles.selected,
+            ]}
+            onPress={() => onSelectDog(dog)}
+            testID={`dog-${dog.id}`}
+            accessibilityLabel={dog.alt}
+            accessibilityRole="button"
+            accessibilityState={{ selected: selectedDogId === dog.id }}
+          >
+            <Image
+              source={{ uri: dog.url }}
+              style={styles.image}
+              accessibilityLabel={dog.alt}
+            />
+            {selectedDogId === dog.id && (
+              <View style={styles.checkmark}>
+                <Text style={styles.checkmarkText}>✓</Text>
+              </View>
+            )}
+          </Pressable>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+    color: '#1f2937',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  imageContainer: {
+    width: '31%',
+    aspectRatio: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: 'transparent',
+    position: 'relative',
+  },
+  selected: {
+    borderColor: '#f472b6',
+    shadowColor: '#f472b6',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  checkmark: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: '#f472b6',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkmarkText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+});
