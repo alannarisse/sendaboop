@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node --import tsx ./api.ts"
+    "build": "tsc",
+    "start": "node dist/api.js"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
@@ -13,7 +14,6 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "resend": "^4.0.0",
-    "tsx": "^4.19.0",
     "typescript": "~5.3.3"
   }
 }
