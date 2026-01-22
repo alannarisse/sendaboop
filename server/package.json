@@ -2,8 +2,9 @@
   "name": "sendaboop-server",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "tsx ./api.ts"
+    "start": "node --import tsx ./api.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
