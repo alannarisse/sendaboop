@@ -62,15 +62,24 @@ function createRecipientEmail(data: SendBoopRequest): string {
                 </p>
               </div>
               ` : ''}
-              <p style="font-size: 16px; color: #f472b6; margin: 0; font-weight: 600;">
+              <p style="font-size: 16px; color: #f472b6; margin: 0 0 20px; font-weight: 600;">
                 — ${data.senderName} sent you this boop!
               </p>
+              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f472b6; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+                Send a Boop to Someone 🐕
+              </a>
             </td>
           </tr>
           <tr>
             <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+              <p style="font-size: 12px; color: #9ca3af; margin: 0 0 8px;">
                 Sent with love via Send a Boop 🐕
+              </p>
+              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f472b6;">Please leave me a tip at Ko-fi!</a>
+              </p>
+              <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
+                © Alanna Risse 2025
               </p>
             </td>
           </tr>
@@ -111,15 +120,24 @@ function createSenderEmail(data: SendBoopRequest): string {
                 Your boop to <strong>${data.recipientName}</strong> has been sent successfully!
               </p>
               <img src="${data.dog.url}" alt="${data.dog.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
-              <p style="font-size: 14px; color: #6b7280; margin: 0;">
+              <p style="font-size: 14px; color: #6b7280; margin: 0 0 20px;">
                 They'll receive a cute doggo in their inbox. You're making someone's day brighter! ✨
               </p>
+              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f472b6; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+                Send Another Boop 🐕
+              </a>
             </td>
           </tr>
           <tr>
             <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+              <p style="font-size: 12px; color: #9ca3af; margin: 0 0 8px;">
                 Sent with love via Send a Boop 🐕
+              </p>
+              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f472b6;">Please leave me a tip at Ko-fi!</a>
+              </p>
+              <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
+                © Alanna Risse 2025
               </p>
             </td>
           </tr>

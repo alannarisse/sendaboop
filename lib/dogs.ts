@@ -8,7 +8,7 @@ export interface Dog {
 }
 
 // Base URL for hosted images (update this to your Vercel domain)
-const IMAGE_BASE_URL = 'https://sendaboop.vercel.app/images/dogs';
+const IMAGE_BASE_URL = 'https://sendaboop.app/images/dogs';
 
 export const dogs: Dog[] = [
   {
