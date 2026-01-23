@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, Linking } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { getDogById } from '@/lib/dogs';
 
@@ -37,6 +37,18 @@ export default function SuccessScreen() {
         <Pressable style={styles.button} onPress={handleSendAnother} testID="send-another-button">
           <Text style={styles.buttonText}>Send Another Boop 🐕</Text>
         </Pressable>
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>© Alanna Risse 2025</Text>
+          <Text style={styles.footerText}>
+            Appreciate this app?{' '}
+            <Text
+              style={styles.footerLink}
+              onPress={() => Linking.openURL('https://ko-fi.com/alannarisse')}
+            >
+              Please leave me a tip at Ko-fi!
+            </Text>
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -109,4 +121,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  footer: {
+    marginTop: 32,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 14,
+    color: '#6b7280',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  footerLink: {
+    color: '#f472b6',
+    textDecorationLine: 'underline',
+  }
 });

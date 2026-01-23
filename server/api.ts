@@ -150,7 +150,7 @@ app.post('/api/send-boop', async (req, res) => {
 
     // Send email to recipient
     const recipientResult = await resend.emails.send({
-      from: 'Send a Boop <onboarding@resend.dev>',
+      from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.recipientEmail,
       subject: `${data.senderName} sent you a Boop! 🐾`,
       html: createRecipientEmail(data),
@@ -163,7 +163,7 @@ app.post('/api/send-boop', async (req, res) => {
 
     // Send confirmation email to sender
     const senderResult = await resend.emails.send({
-      from: 'Send a Boop <onboarding@resend.dev>',
+      from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.senderEmail,
       subject: `Your Boop to ${data.recipientName} was sent! 🎉`,
       html: createSenderEmail(data),
