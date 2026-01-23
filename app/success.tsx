@@ -38,7 +38,7 @@ export default function SuccessScreen() {
           <Text style={styles.buttonText}>Send Another Boop 🐕</Text>
         </Pressable>
         <View style={styles.footer}>
-          <Text style={styles.footerText}>© Alanna Risse 2025</Text>
+          <Text style={styles.footerText}>© Alanna Risse 2026</Text>
           <Text style={styles.footerText}>
             Appreciate this app?{' '}
             <Text
