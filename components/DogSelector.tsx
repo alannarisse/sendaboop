@@ -25,7 +25,7 @@ export function DogSelector({ selectedDogId, onSelectDog }: DogSelectorProps) {
             accessibilityState={{ selected: selectedDogId === dog.id }}
           >
             <Image
-              source={{ uri: dog.url }}
+              source={dog.image}
               style={styles.image}
               accessibilityLabel={dog.alt}
             />

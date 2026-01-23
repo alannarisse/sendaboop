@@ -25,7 +25,7 @@ export default function SuccessScreen() {
 
         {dog && (
           <View style={styles.imageContainer}>
-            <Image source={{ uri: dog.url }} style={styles.dogImage} />
+            <Image source={dog.image} style={styles.dogImage} />
           </View>
         )}
 

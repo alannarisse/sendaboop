@@ -13,7 +13,7 @@ export function BoopPreview({ dog, message, senderName, recipientName }: BoopPre
     <View style={styles.container} testID="boop-preview">
       <Text style={styles.title}>Preview:</Text>
       <View style={styles.card}>
-        <Image source={{ uri: dog.url }} style={styles.image} />
+        <Image source={dog.image} style={styles.image} />
         <View style={styles.content}>
           <Text style={styles.greeting}>
             Hey {recipientName || 'friend'}! 👋
