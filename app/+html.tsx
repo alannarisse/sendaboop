@@ -27,6 +27,8 @@ export default function Root({ children }: PropsWithChildren) {
         <meta property="twitter:title" content="Send a Boop - Brighten Someone's Day with a Cute Dog" />
         <meta property="twitter:description" content="Send a free, fun email to a friend featuring an adorable dog and a personal message. No strings attached - just pure joy!" />
         <meta property="twitter:image" content="https://sendaboop.app/images/og-image.png" />
+        <meta name="author" content="Alanna Risse" />
+        <meta name="publish_date" property="og:publish_date" content="2026-01-28T00:00:00-0600" />
 
         {/* Disable body scrolling on web */}
         <ScrollViewStyleReset />
