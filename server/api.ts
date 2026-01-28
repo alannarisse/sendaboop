@@ -202,6 +202,103 @@ app.post('/api/send-boop', async (req, res) => {
   }
 });
 
+// Contact form
+interface ContactRequest {
+  name: string;
+  email: string;
+  comments: string;
+}
+
+function createContactEmail(data: ContactRequest): string {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Contact Form Submission</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #fdf2f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+          <tr>
+            <td style="background-color: #f8b4d9; padding: 24px; text-align: center;">
+              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">New Contact Form Message 📬</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 24px;">
+              <p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;"><strong>From:</strong></p>
+              <p style="font-size: 16px; color: #1f2937; margin: 0 0 16px;">${data.name}</p>
+
+              <p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;"><strong>Email:</strong></p>
+              <p style="font-size: 16px; color: #1f2937; margin: 0 0 16px;">
+                <a href="mailto:${data.email}" style="color: #f472b6;">${data.email}</a>
+              </p>
+
+              <p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;"><strong>Message:</strong></p>
+              <div style="background-color: #f9fafb; padding: 16px; border-radius: 8px;">
+                <p style="font-size: 16px; color: #4b5563; margin: 0; white-space: pre-wrap;">${data.comments}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
+              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
+                Sent via Send a Boop Contact Form 🐕
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
+}
+
+app.post('/api/contact', async (req, res) => {
+  try {
+    const data: ContactRequest = req.body;
+
+    // Validate required fields
+    if (!data.name || !data.email || !data.comments) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Send contact form email
+    const result = await resend.emails.send({
+      from: 'Send a Boop Contact <sendaboopmain@sendaboop.app>',
+      to: 'sendaboop@gmail.com',
+      replyTo: data.email,
+      subject: `Contact Form: Message from ${data.name}`,
+      html: createContactEmail(data),
+    });
+
+    if (result.error) {
+      console.error('Failed to send contact email:', result.error);
+      return res.status(500).json({ error: 'Failed to send message' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Message sent successfully!'
+    });
+  } catch (error) {
+    console.error('Error sending contact form:', error);
+    res.status(500).json({ error: 'Failed to send message. Please try again.' });
+  }
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });

@@ -3,7 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
+import { Header } from '@/components/Header';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,38 +33,22 @@ export default function RootLayout() {
   }
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <StatusBar style="dark" />
+      <Header />
       <Stack
         screenOptions={{
-          headerStyle: {
-            backgroundColor: '#f8b4d9',
-          },
-          headerTintColor: '#1f2937',
-          headerTitleStyle: {
-            fontFamily: 'Quattrocento-Bold',
-          },
+          headerShown: false,
           contentStyle: {
             backgroundColor: '#fff',
           },
         }}
       >
-
-        <Stack.Screen
-          name="index"
-          options={{
-            title: 'Send a Boop 🐕',
-          }}
-        />
-
-        <Stack.Screen
-          name="success"
-          options={{
-            title: 'Boop Sent!',
-            headerBackVisible: false,
-          }}
-        />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="success" />
+        <Stack.Screen name="about" />
+        <Stack.Screen name="contact" />
       </Stack>
-    </>
+    </View>
   );
 }
