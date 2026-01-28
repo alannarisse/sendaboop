@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     borderColor: '#fecaca',
   },
   apiError: {
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#dc2626',
     textAlign: 'center',
     fontSize: 14,
@@ -182,8 +183,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#f472b6',
-    shadowOffset: { width: 0, height: 4 },
+    shadowColor: '#000000a2',
+    shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
@@ -193,8 +194,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0,
   },
   sendButtonText: {
+    fontFamily: 'QuattrocentoSans-Bold',
     color: 'white',
     fontSize: 18,
-    fontWeight: '600',
   },
 });

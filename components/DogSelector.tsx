@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'Quattrocento-Bold',
     marginBottom: 12,
     color: '#1f2937',
   },
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 4,
     right: 4,
+    //backgroundColor: 'linear-gradient(120deg, #fccb90 0%, #d57eeb 100%)',
     backgroundColor: '#f472b6',
     borderRadius: 12,
     width: 24,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   },
   checkmarkText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: 'QuattrocentoSans-Bold',
     fontSize: 14,
   },
 });

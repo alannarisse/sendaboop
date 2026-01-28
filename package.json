@@ -12,8 +12,11 @@
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
-    "expo": "~52.0.0",
+    "expo": "^54.0.32",
+    "expo-font": "~14.0.11",
+    "expo-linear-gradient": "~14.0.2",
     "expo-router": "~4.0.0",
+    "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",

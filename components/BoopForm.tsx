@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Quattrocento-Bold',
     color: '#6b7280',
     marginTop: 8,
     marginBottom: 8,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'QuattrocentoSans-Bold',
     color: '#374151',
     marginBottom: 6,
   },
@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#1f2937',
   },
   inputError: {
@@ -170,11 +171,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   errorText: {
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#ef4444',
     fontSize: 12,
     marginTop: 4,
   },
   charCount: {
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#9ca3af',
     fontSize: 12,
     textAlign: 'right',

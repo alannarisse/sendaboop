@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Quattrocento-Bold',
     color: '#6b7280',
     marginBottom: 8,
   },
@@ -63,28 +63,28 @@ const styles = StyleSheet.create({
   },
   greeting: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'QuattrocentoSans-Bold',
     color: '#1f2937',
     marginBottom: 8,
   },
   message: {
     fontSize: 16,
+    fontFamily: 'QuattrocentoSans-Italic',
     color: '#4b5563',
     textAlign: 'center',
-    fontStyle: 'italic',
     marginBottom: 12,
     paddingHorizontal: 8,
   },
   messagePlaceholder: {
     fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Italic',
     color: '#9ca3af',
     textAlign: 'center',
-    fontStyle: 'italic',
     marginBottom: 12,
   },
   signature: {
     fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Bold',
     color: '#f472b6',
-    fontWeight: '500',
   },
 });

@@ -71,12 +71,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'Quattrocento-Bold',
     color: '#1f2937',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 18,
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#6b7280',
     textAlign: 'center',
     marginBottom: 24,
@@ -99,6 +100,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#6b7280',
     textAlign: 'center',
     marginBottom: 32,
@@ -117,9 +119,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   buttonText: {
+    fontFamily: 'QuattrocentoSans-Bold',
     color: 'white',
     fontSize: 18,
-    fontWeight: '600',
   },
   footer: {
     marginTop: 32,
@@ -127,11 +129,13 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#6b7280',
     textAlign: 'center',
     marginBottom: 8,
   },
   footerLink: {
+    fontFamily: 'QuattrocentoSans-Regular',
     color: '#f472b6',
     textDecorationLine: 'underline',
   }
