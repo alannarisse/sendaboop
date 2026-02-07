@@ -14,6 +14,7 @@ import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 import { DogSelector } from '@/components/DogSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
+import { Tooltip } from '@/components/Tooltip';
 import { Dog } from '@/lib/dogs';
 import { sendBoop } from '@/lib/api';
 
@@ -136,31 +137,36 @@ export default function SendBoopScreen() {
       )}
 
       <View style={styles.buttonContainer}>
-        <Pressable
-          onPress={handleSendBoop}
-          disabled={isLoading || !isFormValid}
-          testID="send-button"
-          style={({ pressed }) => [
-            styles.sendButtonWrapper,
-            pressed && styles.sendButtonPressed,
-          ]}
+        <Tooltip
+          text="There's some missing info. Make sure you've selected a dog and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
+          visible={!isFormValid && !isLoading}
         >
-          <LinearGradient
-            colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.sendButton}
+          <Pressable
+            onPress={handleSendBoop}
+            disabled={isLoading || !isFormValid}
+            testID="send-button"
+            style={({ pressed }) => [
+              styles.sendButtonWrapper,
+              pressed && isFormValid && styles.sendButtonPressed,
+            ]}
           >
-            {isLoading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <View style={styles.sendButtonContent}>
-                <PaperPlaneIcon />
-                <Text style={styles.sendButtonText}>Send Dog Photo</Text>
-              </View>
-            )}
-          </LinearGradient>
-        </Pressable>
+            <LinearGradient
+              colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.sendButton}
+            >
+              {isLoading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <View style={styles.sendButtonContent}>
+                  <PaperPlaneIcon />
+                  <Text style={styles.sendButtonText}>Send Dog Photo</Text>
+                </View>
+              )}
+            </LinearGradient>
+          </Pressable>
+        </Tooltip>
       </View>
     </ScrollView>
   );

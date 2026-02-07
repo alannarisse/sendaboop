@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, Linking } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Linking, Image, Pressable } from 'react-native';
 
 export default function AboutScreen() {
   const openLink = (url: string) => {
@@ -22,6 +22,11 @@ export default function AboutScreen() {
 
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Who Am I?</Text>
+        <Image
+          source={require('@/assets/images/general/bio-pic.jpeg')}
+          style={styles.bioPhoto}
+          resizeMode="cover"
+        />
         <Text style={styles.paragraph}>
           Hi there! I'm Alanna Risse. I live in Portland, Oregon. I teach part-time in Portland
           State's Graphic Design program. I've been a web developer since 1997. I have a YouTube
@@ -64,6 +69,30 @@ export default function AboutScreen() {
           </Text>
         </Text>
       </View>
+
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Support This App</Text>
+        <Text style={styles.paragraph}>
+          Appreciate this app?{' '}
+          <Text style={styles.link} onPress={() => openLink('https://ko-fi.com/alannarisse')}>
+            Leave a tip at Ko-fi!
+          </Text>
+        </Text>
+        <Pressable
+          onPress={() => openLink('https://ko-fi.com/alannarisse')}
+          style={({ pressed }) => [
+            styles.kofiButton,
+            pressed && styles.kofiButtonPressed,
+          ]}
+        >
+          <Image
+            source={require('@/assets/images/general/support_me_on_kofi_beige.png')}
+            style={styles.kofiImage}
+            accessibilityLabel="Support Alanna on Ko-fi"
+            resizeMode="contain"
+          />
+        </Pressable>
+      </View>
     </ScrollView>
   );
 }
@@ -101,6 +130,12 @@ const styles = StyleSheet.create({
     color: '#1f2937',
     marginBottom: 10,
   },
+  bioPhoto: {
+    width: '100%',
+    height: 200,
+    borderRadius: 14,
+    marginBottom: 14,
+  },
   paragraph: {
     fontFamily: 'QuattrocentoSans-Regular',
     fontSize: 15,
@@ -111,5 +146,16 @@ const styles = StyleSheet.create({
   link: {
     color: '#f87171',
     fontFamily: 'QuattrocentoSans-Bold',
+  },
+  kofiButton: {
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  kofiButtonPressed: {
+    opacity: 0.8,
+  },
+  kofiImage: {
+    width: 180,
+    height: 36,
   },
 });

@@ -6,7 +6,9 @@ On all pages, including the homepage, add a thin menu bar at the top with the ab
 
 On the about page, in the "Who am I?" section, Add this photo above the text: assets/images/general/bio-pic.jpeg. Style it with rounded corners the same radius as the dog pics.
 
-On the BoopPreview page, add this image below the words : Appreciate this app? Leave a tip at Ko-fi! and add a link to the button that also goes to 'https://ko-fi.com/alannarisse'. Keep the link in the text as well.
+On the BoopPreview page, add this image: assets/images/general/support_me_on_kofi_beige.png' below the words : "Appreciate this app? Leave a tip at Ko-fi!"  Add a link to the button that also goes to 'https://ko-fi.com/alannarisse'. Keep the existing link in the text as well.
+
+In a new section at the bottom of the about page, add the words:  "Appreciate this app? Leave a tip at Ko-fi!" and underneath it add this image: 'assets/images/general/support_me_on_kofi_beige.png' both the words "Leave a tip at Ko-fi!" and the image should link to 'https://ko-fi.com/alannarisse'. The alt text for the image should say "Support Alanna on Ko-fi".  
 
 
 

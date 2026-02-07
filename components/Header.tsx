@@ -10,6 +10,32 @@ function HeartIcon({ size = 40, color = '#f87171' }: { size?: number; color?: st
   );
 }
 
+function MenuBar({ pathname, navigateTo }: { pathname: string; navigateTo: (path: string) => void }) {
+  return (
+    <View style={styles.menuBar}>
+      <View style={styles.menuBarContent}>
+        {pathname !== '/' && (
+          <Pressable onPress={() => navigateTo('/')} style={styles.backButton}>
+            <Text style={styles.backText}>← Back</Text>
+          </Pressable>
+        )}
+        <View style={[styles.menuNav, pathname === '/' && styles.menuNavCentered]}>
+          <Pressable onPress={() => navigateTo('/about')} style={styles.navItem}>
+            <Text style={[styles.navText, pathname === '/about' && styles.navTextActive]}>
+              About
+            </Text>
+          </Pressable>
+          <Pressable onPress={() => navigateTo('/contact')} style={styles.navItem}>
+            <Text style={[styles.navText, pathname === '/contact' && styles.navTextActive]}>
+              Contact
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
@@ -22,41 +48,46 @@ export function Header() {
 
   if (isHomePage) {
     return (
-      <View style={styles.heroContainer}>
-        <View style={styles.heartWrapper}>
-          <HeartIcon size={44} color="#f87171" />
+      <View>
+        <MenuBar pathname={pathname} navigateTo={navigateTo} />
+        <View style={styles.heroContainer}>
+          <View style={styles.heartWrapper}>
+            <HeartIcon size={44} color="#f87171" />
+          </View>
+          <Text style={styles.heroTitle}>Send A Boop!</Text>
+          <Text style={styles.heroSubtitle}>Pick your favorite doggo to brighten someone's day</Text>
         </View>
-        <Text style={styles.heroTitle}>Send A Boop!</Text>
-        <Text style={styles.heroSubtitle}>Pick your favorite doggo to brighten someone's day</Text>
       </View>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <Pressable onPress={() => navigateTo('/')} style={styles.backButton}>
-        <Text style={styles.backText}>← Back</Text>
-      </Pressable>
-      <View style={styles.nav}>
-        <Pressable onPress={() => navigateTo('/about')} style={styles.navItem}>
-          <Text style={[styles.navText, pathname === '/about' && styles.navTextActive]}>
-            About
-          </Text>
-        </Pressable>
-        <Pressable onPress={() => navigateTo('/contact')} style={styles.navItem}>
-          <Text style={[styles.navText, pathname === '/contact' && styles.navTextActive]}>
-            Contact
-          </Text>
-        </Pressable>
-      </View>
-    </View>
-  );
+  return <MenuBar pathname={pathname} navigateTo={navigateTo} />;
 }
 
 const styles = StyleSheet.create({
+  menuBar: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
+  },
+  menuBarContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  menuNav: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+  },
+  menuNavCentered: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
   heroContainer: {
     alignItems: 'center',
-    paddingTop: 24,
+    paddingTop: 16,
     paddingBottom: 16,
     paddingHorizontal: 16,
   },
@@ -75,26 +106,14 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     textAlign: 'center',
   },
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
   backButton: {
     paddingVertical: 4,
     paddingHorizontal: 8,
   },
   backText: {
     fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 16,
+    fontSize: 14,
     color: '#f87171',
-  },
-  nav: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 20,
   },
   navItem: {
     paddingVertical: 4,
@@ -102,7 +121,7 @@ const styles = StyleSheet.create({
   },
   navText: {
     fontFamily: 'QuattrocentoSans-Regular',
-    fontSize: 16,
+    fontSize: 14,
     color: '#6b7280',
   },
   navTextActive: {

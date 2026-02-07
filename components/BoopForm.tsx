@@ -22,6 +22,14 @@ interface BoopFormProps {
   onChangeField: (field: keyof BoopFormData, value: string) => void;
 }
 
+function RequiredLabel({ text }: { text: string }) {
+  return (
+    <Text style={styles.fieldLabel}>
+      {text}<Text style={styles.requiredAsterisk}>*</Text>
+    </Text>
+  );
+}
+
 export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
   return (
     <View style={styles.container}>
@@ -29,11 +37,12 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         <Text style={styles.disclaimer}>I won't save, share, sell, or use these emails!</Text>
         <Text style={styles.sectionLabel}>FROM YOU</Text>
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Your name" />
           <TextInput
             style={[styles.input, errors.senderName && styles.inputError]}
             value={formData.senderName}
             onChangeText={(text) => onChangeField('senderName', text)}
-            placeholder="Your name"
+            placeholder="Enter your name"
             placeholderTextColor="#a1a3a4"
             testID="sender-name-input"
             autoCapitalize="words"
@@ -46,11 +55,12 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
           </Text>
         )}
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Your email" />
           <TextInput
             style={[styles.input, errors.senderEmail && styles.inputError]}
             value={formData.senderEmail}
             onChangeText={(text) => onChangeField('senderEmail', text)}
-            placeholder="Your email"
+            placeholder="your@email.com"
             placeholderTextColor="#a1a3a4"
             testID="sender-email-input"
             keyboardType="email-address"
@@ -68,11 +78,12 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
       <View style={styles.card}>
         <Text style={styles.sectionLabel}>TO YOUR FRIEND</Text>
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Friend's name" />
           <TextInput
             style={[styles.input, errors.recipientName && styles.inputError]}
             value={formData.recipientName}
             onChangeText={(text) => onChangeField('recipientName', text)}
-            placeholder="Friend's name"
+            placeholder="Enter their name"
             placeholderTextColor="#a1a3a4"
             testID="recipient-name-input"
             autoCapitalize="words"
@@ -85,11 +96,12 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
           </Text>
         )}
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Friend's email" />
           <TextInput
             style={[styles.input, errors.recipientEmail && styles.inputError]}
             value={formData.recipientEmail}
             onChangeText={(text) => onChangeField('recipientEmail', text)}
-            placeholder="Friend's email"
+            placeholder="friend@email.com"
             placeholderTextColor="#a1a3a4"
             testID="recipient-email-input"
             keyboardType="email-address"
@@ -107,6 +119,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
       <View style={styles.card}>
         <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
         <View style={styles.inputWrapper}>
+          <Text style={styles.fieldLabel}>Message (optional)</Text>
           <TextInput
             style={[styles.input, styles.messageInput, errors.message && styles.inputError]}
             value={formData.message}
@@ -153,13 +166,23 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     textTransform: 'uppercase',
   },
-    disclaimer: {
+  disclaimer: {
     fontSize: 14,
     fontFamily: 'QuattrocentoSans-Bold',
     color: '#34373a',
     letterSpacing: 1,
     marginBottom: 12,
     textTransform: 'none',
+  },
+  fieldLabel: {
+    fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Bold',
+    color: '#4b5563',
+    marginBottom: 6,
+  },
+  requiredAsterisk: {
+    color: '#f87171',
+    fontFamily: 'QuattrocentoSans-Bold',
   },
   inputWrapper: {
     marginBottom: 8,

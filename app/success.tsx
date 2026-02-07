@@ -55,7 +55,7 @@ export default function SuccessScreen() {
           ]}
         >
           <LinearGradient
-            colors={['#fcd5ce', '#f8a4a4', '#f87171']}
+            colors={['#f9beb4', '#f8a4a4', '#f87171']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.button}
@@ -75,6 +75,20 @@ export default function SuccessScreen() {
               Leave a tip at Ko-fi!
             </Text>
           </Text>
+          <Pressable
+            onPress={() => Linking.openURL('https://ko-fi.com/alannarisse')}
+            style={({ pressed }) => [
+              styles.kofiButton,
+              pressed && styles.kofiButtonPressed,
+            ]}
+          >
+            <Image
+              source={require('@/assets/images/general/support_me_on_kofi_beige.png')}
+              style={styles.kofiImage}
+              alt={'Support me on Ko-fi'}
+              resizeMode="contain"
+            />
+          </Pressable>
         </View>
       </View>
     </View>
@@ -173,5 +187,15 @@ const styles = StyleSheet.create({
   footerLink: {
     fontFamily: 'QuattrocentoSans-Bold',
     color: '#f87171',
+  },
+  kofiButton: {
+    marginTop: 12,
+  },
+  kofiButtonPressed: {
+    opacity: 0.8,
+  },
+  kofiImage: {
+    width: 180,
+    height: 36,
   },
 });

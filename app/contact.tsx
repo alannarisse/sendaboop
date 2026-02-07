@@ -14,6 +14,14 @@ function HeartIcon({ size = 48, color = '#f87171' }: { size?: number; color?: st
   );
 }
 
+function RequiredLabel({ text }: { text: string }) {
+  return (
+    <Text style={styles.fieldLabel}>
+      {text}<Text style={styles.requiredAsterisk}>*</Text>
+    </Text>
+  );
+}
+
 export default function ContactScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -119,6 +127,7 @@ export default function ContactScreen() {
       <View style={styles.card}>
         <Text style={styles.sectionLabel}>YOUR INFO</Text>
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Your name" />
           <TextInput
             style={[styles.input, errors.name && styles.inputError]}
             value={name}
@@ -126,7 +135,7 @@ export default function ContactScreen() {
               setName(text);
               setErrors((prev) => ({ ...prev, name: undefined }));
             }}
-            placeholder="Your name"
+            placeholder="Enter your name"
             placeholderTextColor="#9ca3af"
             autoCapitalize="words"
             autoCorrect={false}
@@ -135,6 +144,7 @@ export default function ContactScreen() {
         {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
 
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Your email" />
           <TextInput
             style={[styles.input, errors.email && styles.inputError]}
             value={email}
@@ -142,7 +152,7 @@ export default function ContactScreen() {
               setEmail(text);
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
-            placeholder="Your email"
+            placeholder="your@email.com"
             placeholderTextColor="#9ca3af"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -155,6 +165,7 @@ export default function ContactScreen() {
       <View style={styles.card}>
         <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
         <View style={styles.inputWrapper}>
+          <RequiredLabel text="Message" />
           <TextInput
             style={[styles.input, styles.textArea, errors.comments && styles.inputError]}
             value={comments}
@@ -257,6 +268,16 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 12,
     textTransform: 'uppercase',
+  },
+  fieldLabel: {
+    fontSize: 14,
+    fontFamily: 'QuattrocentoSans-Bold',
+    color: '#4b5563',
+    marginBottom: 6,
+  },
+  requiredAsterisk: {
+    color: '#f87171',
+    fontFamily: 'QuattrocentoSans-Bold',
   },
   inputWrapper: {
     marginBottom: 8,
