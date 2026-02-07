@@ -3,7 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Header } from '@/components/Header';
 
 SplashScreen.preventAutoHideAsync();
@@ -26,21 +27,27 @@ export default function RootLayout() {
 
   if (!fontsLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fdf2f8' }}>
-        <ActivityIndicator size="large" color="#f472b6" />
-      </View>
+      <LinearGradient
+        colors={['#fff5f5', '#ffeef2', '#fff0f3']}
+        style={styles.loadingContainer}
+      >
+        <ActivityIndicator size="large" color="#f87171" />
+      </LinearGradient>
     );
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <LinearGradient
+      colors={['#fff5f5', '#ffeef2', '#fff0f3']}
+      style={styles.container}
+    >
       <StatusBar style="dark" />
       <Header />
       <Stack
         screenOptions={{
           headerShown: false,
           contentStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: 'transparent',
           },
         }}
       >
@@ -49,6 +56,17 @@ export default function RootLayout() {
         <Stack.Screen name="about" />
         <Stack.Screen name="contact" />
       </Stack>
-    </View>
+    </LinearGradient>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

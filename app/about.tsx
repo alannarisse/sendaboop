@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, StyleSheet, Pressable, Linking } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Linking } from 'react-native';
 
 export default function AboutScreen() {
   const openLink = (url: string) => {
@@ -9,18 +9,18 @@ export default function AboutScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.pageTitle}>About Send a Boop</Text>
 
-      <View style={styles.section}>
+      <View style={styles.card}>
         <Text style={styles.sectionTitle}>What is Send a Boop</Text>
         <Text style={styles.paragraph}>
           This project was originally imagined while teaching a UX/UI class at Portland State.
           It was a demo project for an assignment using Figma to design an app concept. I liked
           the idea so much that I wanted to make it real. The Internet kinda sucks now. Everyone
           wants something from you. I just want to brighten people's day with an app that, for
-          once, doesn't want anything in return.
+          once, doesn't want anything in return. You'll find my privacy policy below.
         </Text>
       </View>
 
-      <View style={styles.section}>
+      <View style={styles.card}>
         <Text style={styles.sectionTitle}>Who Am I?</Text>
         <Text style={styles.paragraph}>
           Hi there! I'm Alanna Risse. I live in Portland, Oregon. I teach part-time in Portland
@@ -33,7 +33,7 @@ export default function AboutScreen() {
         </Text>
       </View>
 
-      <View style={styles.section}>
+      <View style={styles.card}>
         <Text style={styles.sectionTitle}>Hire Me</Text>
         <Text style={styles.paragraph}>
           I am actively looking for a full-time position in Portland, Oregon or remote. You can
@@ -44,8 +44,8 @@ export default function AboutScreen() {
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Send A Boop's Privacy Policy</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>Privacy Policy</Text>
         <Text style={styles.paragraph}>
           I am not collecting your email addresses for anything other than making sure my service
           still works. The email service I use, Resend, stores my customers' data (you and/or your
@@ -71,37 +71,45 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
   },
   content: {
-    padding: 24,
+    padding: 16,
     paddingBottom: 48,
   },
   pageTitle: {
     fontFamily: 'Quattrocento-Bold',
-    fontSize: 28,
+    fontSize: 26,
     color: '#1f2937',
-    marginBottom: 24,
+    marginBottom: 20,
     textAlign: 'center',
   },
-  section: {
-    marginBottom: 24,
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   sectionTitle: {
     fontFamily: 'Quattrocento-Bold',
-    fontSize: 20,
+    fontSize: 18,
     color: '#1f2937',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   paragraph: {
     fontFamily: 'QuattrocentoSans-Regular',
-    fontSize: 16,
+    fontSize: 15,
     color: '#4b5563',
-    lineHeight: 26,
-    marginBottom: 12,
+    lineHeight: 24,
+    marginBottom: 10,
   },
   link: {
-    color: '#f472b6',
-    textDecorationLine: 'underline',
+    color: '#f87171',
+    fontFamily: 'QuattrocentoSans-Bold',
   },
 });

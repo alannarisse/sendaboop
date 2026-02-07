@@ -9,12 +9,21 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 import { DogSelector } from '@/components/DogSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
-import { BoopPreview } from '@/components/BoopPreview';
 import { Dog } from '@/lib/dogs';
 import { sendBoop } from '@/lib/api';
+
+function PaperPlaneIcon() {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="white">
+      <Path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+    </Svg>
+  );
+}
 
 const initialFormData: BoopFormData = {
   senderName: '',
@@ -120,15 +129,6 @@ export default function SendBoopScreen() {
         onChangeField={handleChangeField}
       />
 
-      {selectedDog && (
-        <BoopPreview
-          dog={selectedDog}
-          message={formData.message}
-          senderName={formData.senderName}
-          recipientName={formData.recipientName}
-        />
-      )}
-
       {apiError && (
         <View style={styles.errorContainer}>
           <Text style={styles.apiError} testID="api-error">{apiError}</Text>
@@ -137,16 +137,29 @@ export default function SendBoopScreen() {
 
       <View style={styles.buttonContainer}>
         <Pressable
-          style={[styles.sendButton, !isFormValid && styles.sendButtonDisabled]}
           onPress={handleSendBoop}
           disabled={isLoading || !isFormValid}
           testID="send-button"
+          style={({ pressed }) => [
+            styles.sendButtonWrapper,
+            pressed && styles.sendButtonPressed,
+          ]}
         >
-          {isLoading ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <Text style={styles.sendButtonText}>Send Boop! 🐾</Text>
-          )}
+          <LinearGradient
+            colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.sendButton}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <View style={styles.sendButtonContent}>
+                <PaperPlaneIcon />
+                <Text style={styles.sendButtonText}>Send Dog Photo</Text>
+              </View>
+            )}
+          </LinearGradient>
         </Pressable>
       </View>
     </ScrollView>
@@ -156,16 +169,17 @@ export default function SendBoopScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
   },
   content: {
     paddingBottom: 40,
   },
   errorContainer: {
     marginHorizontal: 16,
+    marginTop: 8,
     padding: 12,
-    backgroundColor: '#fef2f2',
-    borderRadius: 8,
+    backgroundColor: 'rgba(254, 242, 242, 0.9)',
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#fecaca',
   },
@@ -176,26 +190,38 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   buttonContainer: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 24,
+    paddingBottom: 16,
   },
-  sendButton: {
-    backgroundColor: '#f472b6',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#000000a2',
-    shadowOffset: { width: 4, height: 4 },
+  sendButtonWrapper: {
+    borderRadius: 14,
+    overflow: 'hidden',
+    shadowColor: '#8c8a8a',
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 6,
   },
-  sendButtonDisabled: {
-    backgroundColor: '#d1d5db',
-    shadowOpacity: 0,
+  sendButtonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
+  },
+  sendButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sendButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   sendButtonText: {
     fontFamily: 'QuattrocentoSans-Bold',
     color: 'white',
-    fontSize: 18,
+    fontSize: 17,
   },
 });

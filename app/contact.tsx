@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
+
+function HeartIcon({ size = 48, color = '#f87171' }: { size?: number; color?: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </Svg>
+  );
+}
 
 export default function ContactScreen() {
   const [name, setName] = useState('');
@@ -71,26 +81,44 @@ export default function ContactScreen() {
     return (
       <View style={styles.container}>
         <View style={styles.successContainer}>
-          <Text style={styles.successEmoji}>✉️</Text>
+          <View style={styles.heartWrapper}>
+            <HeartIcon size={56} color="#f87171" />
+          </View>
           <Text style={styles.successTitle}>Message Sent!</Text>
           <Text style={styles.successText}>
             Thank you for reaching out. I'll get back to you as soon as possible.
           </Text>
-          <Pressable style={styles.homeButton} onPress={() => router.replace('/')}>
-            <Text style={styles.homeButtonText}>Back to Home</Text>
+          <Pressable
+            style={({ pressed }) => [
+              styles.homeButtonWrapper,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => router.replace('/')}
+          >
+            <LinearGradient
+              colors={['#fcd5ce', '#f8a4a4', '#f87171']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.homeButton}
+            >
+              <Text style={styles.homeButtonText}>Back to Home</Text>
+            </LinearGradient>
           </Pressable>
         </View>
       </View>
     );
   }
 
+  const isFormValid = name.trim() && email.trim() && comments.trim();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.pageTitle}>Contact Me About Send a Boop</Text>
+      <Text style={styles.pageTitle}>Get in Touch</Text>
+      <Text style={styles.introParagraph}>Questions? Thoughts? Comments? Send me an email.</Text>
 
-      <View style={styles.form}>
-        <View style={styles.field}>
-          <Text style={styles.label}>Name</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionLabel}>YOUR INFO</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.name && styles.inputError]}
             value={name}
@@ -99,14 +127,14 @@ export default function ContactScreen() {
               setErrors((prev) => ({ ...prev, name: undefined }));
             }}
             placeholder="Your name"
+            placeholderTextColor="#9ca3af"
             autoCapitalize="words"
             autoCorrect={false}
           />
-          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
+        {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Email</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.email && styles.inputError]}
             value={email}
@@ -114,16 +142,19 @@ export default function ContactScreen() {
               setEmail(text);
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
-            placeholder="your@email.com"
+            placeholder="Your email"
+            placeholderTextColor="#9ca3af"
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
           />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
         </View>
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+      </View>
 
-        <View style={styles.field}>
-          <Text style={styles.label}>Comments</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, styles.textArea, errors.comments && styles.inputError]}
             value={comments}
@@ -132,37 +163,54 @@ export default function ContactScreen() {
               setErrors((prev) => ({ ...prev, comments: undefined }));
             }}
             placeholder="What would you like to say?"
+            placeholderTextColor="#9ca3af"
             multiline
             numberOfLines={6}
             maxLength={500}
             textAlignVertical="top"
           />
-          <Text style={styles.charCount}>{comments.length}/500</Text>
-          {errors.comments && <Text style={styles.errorText}>{errors.comments}</Text>}
         </View>
+        {errors.comments && <Text style={styles.errorText}>{errors.comments}</Text>}
+      </View>
 
-        {apiError && (
-          <View style={styles.apiErrorContainer}>
-            <Text style={styles.apiErrorText}>{apiError}</Text>
-          </View>
-        )}
+      {apiError && (
+        <View style={styles.apiErrorContainer}>
+          <Text style={styles.apiErrorText}>{apiError}</Text>
+        </View>
+      )}
 
-        <View style={styles.buttonRow}>
-          <Pressable style={styles.cancelButton} onPress={handleCancel} disabled={isLoading}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </Pressable>
-          <Pressable
-            style={[styles.sendButton, isLoading && styles.sendButtonDisabled]}
-            onPress={handleSubmit}
-            disabled={isLoading}
+      <View style={styles.buttonRow}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.cancelButton,
+            pressed && styles.cancelButtonPressed,
+          ]}
+          onPress={handleCancel}
+          disabled={isLoading}
+        >
+          <Text style={styles.cancelButtonText}>Cancel</Text>
+        </Pressable>
+        <Pressable
+          style={({ pressed }) => [
+            styles.sendButtonWrapper,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={handleSubmit}
+          disabled={isLoading || !isFormValid}
+        >
+          <LinearGradient
+            colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.sendButton}
           >
             {isLoading ? (
               <ActivityIndicator color="white" size="small" />
             ) : (
               <Text style={styles.sendButtonText}>Send</Text>
             )}
-          </Pressable>
-        </View>
+          </LinearGradient>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -171,104 +219,131 @@ export default function ContactScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
   },
   content: {
-    padding: 24,
+    padding: 16,
     paddingBottom: 48,
   },
   pageTitle: {
     fontFamily: 'Quattrocento-Bold',
-    fontSize: 24,
+    fontSize: 26,
     color: '#1f2937',
-    marginBottom: 24,
+    marginBottom: 20,
     textAlign: 'center',
   },
-  form: {
-    backgroundColor: '#f9fafb',
-    borderRadius: 12,
-    padding: 20,
+    introParagraph: {
+    fontFamily: 'Quattrocento',
+    fontSize: 16,
+    color: '#1f2937',
+    marginBottom: 20,
+    textAlign: 'center',
   },
-  field: {
-    marginBottom: 16,
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 14,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  label: {
+  sectionLabel: {
+    fontSize: 11,
     fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 14,
-    color: '#374151',
-    marginBottom: 6,
+    color: '#9ca3af',
+    letterSpacing: 1,
+    marginBottom: 12,
+    textTransform: 'uppercase',
+  },
+  inputWrapper: {
+    marginBottom: 8,
   },
   input: {
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
+    borderColor: '#e5e7eb',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
     fontFamily: 'QuattrocentoSans-Regular',
     color: '#1f2937',
   },
   inputError: {
-    borderColor: '#ef4444',
+    borderColor: '#f87171',
     borderWidth: 2,
   },
   textArea: {
-    height: 150,
+    height: 120,
     textAlignVertical: 'top',
+    paddingTop: 12,
   },
   errorText: {
     fontFamily: 'QuattrocentoSans-Regular',
-    color: '#ef4444',
+    color: '#f87171',
     fontSize: 12,
-    marginTop: 4,
-  },
-  charCount: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#9ca3af',
-    fontSize: 12,
-    textAlign: 'right',
-    marginTop: 4,
+    marginTop: -4,
+    marginBottom: 8,
+    marginLeft: 4,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 12,
     marginTop: 8,
+    paddingHorizontal: 4,
   },
   cancelButton: {
-    backgroundColor: '#e5e7eb',
-    paddingVertical: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    paddingVertical: 14,
     paddingHorizontal: 24,
-    borderRadius: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  cancelButtonPressed: {
+    opacity: 0.7,
   },
   cancelButtonText: {
     fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 16,
-    color: '#4b5563',
+    fontSize: 15,
+    color: '#6b7280',
+  },
+  sendButtonWrapper: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#8c8a8a',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  buttonPressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   sendButton: {
-    backgroundColor: '#f472b6',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    minWidth: 80,
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 12,
     alignItems: 'center',
-  },
-  sendButtonDisabled: {
-    backgroundColor: '#f9a8d4',
+    minWidth: 90,
   },
   sendButtonText: {
     fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 16,
+    fontSize: 15,
     color: 'white',
   },
   apiErrorContainer: {
-    backgroundColor: '#fef2f2',
-    borderRadius: 8,
+    backgroundColor: 'rgba(254, 242, 242, 0.9)',
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#fecaca',
     padding: 12,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   apiErrorText: {
     fontFamily: 'QuattrocentoSans-Regular',
@@ -282,8 +357,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 24,
   },
-  successEmoji: {
-    fontSize: 64,
+  heartWrapper: {
     marginBottom: 16,
   },
   successTitle: {
@@ -299,11 +373,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24,
   },
+  homeButtonWrapper: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#f87171',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 4,
+  },
   homeButton: {
-    backgroundColor: '#f472b6',
     paddingVertical: 14,
     paddingHorizontal: 28,
-    borderRadius: 8,
+    borderRadius: 12,
   },
   homeButtonText: {
     fontFamily: 'QuattrocentoSans-Bold',

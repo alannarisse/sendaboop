@@ -25,97 +25,100 @@ interface BoopFormProps {
 export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>From:</Text>
-      <View style={styles.fieldGroup}>
-        <View style={styles.field}>
-          <Text style={styles.label}>Your Name</Text>
+      <View style={styles.card}>
+        <Text style={styles.disclaimer}>I won't save, share, sell, or use these emails!</Text>
+        <Text style={styles.sectionLabel}>FROM YOU</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.senderName && styles.inputError]}
             value={formData.senderName}
             onChangeText={(text) => onChangeField('senderName', text)}
             placeholder="Your name"
+            placeholderTextColor="#a1a3a4"
             testID="sender-name-input"
             autoCapitalize="words"
             autoCorrect={false}
           />
-          {errors.senderName && (
-            <Text style={styles.errorText} testID="sender-name-error">
-              {errors.senderName}
-            </Text>
-          )}
         </View>
-        <View style={styles.field}>
-          <Text style={styles.label}>Your Email</Text>
+        {errors.senderName && (
+          <Text style={styles.errorText} testID="sender-name-error">
+            {errors.senderName}
+          </Text>
+        )}
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.senderEmail && styles.inputError]}
             value={formData.senderEmail}
             onChangeText={(text) => onChangeField('senderEmail', text)}
-            placeholder="your@email.com"
+            placeholder="Your email"
+            placeholderTextColor="#a1a3a4"
             testID="sender-email-input"
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
           />
-          {errors.senderEmail && (
-            <Text style={styles.errorText} testID="sender-email-error">
-              {errors.senderEmail}
-            </Text>
-          )}
         </View>
+        {errors.senderEmail && (
+          <Text style={styles.errorText} testID="sender-email-error">
+            {errors.senderEmail}
+          </Text>
+        )}
       </View>
 
-      <Text style={styles.sectionTitle}>To:</Text>
-      <View style={styles.fieldGroup}>
-        <View style={styles.field}>
-          <Text style={styles.label}>Recipient Name</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionLabel}>TO YOUR FRIEND</Text>
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.recipientName && styles.inputError]}
             value={formData.recipientName}
             onChangeText={(text) => onChangeField('recipientName', text)}
             placeholder="Friend's name"
+            placeholderTextColor="#a1a3a4"
             testID="recipient-name-input"
             autoCapitalize="words"
             autoCorrect={false}
           />
-          {errors.recipientName && (
-            <Text style={styles.errorText} testID="recipient-name-error">
-              {errors.recipientName}
-            </Text>
-          )}
         </View>
-        <View style={styles.field}>
-          <Text style={styles.label}>Recipient Email</Text>
+        {errors.recipientName && (
+          <Text style={styles.errorText} testID="recipient-name-error">
+            {errors.recipientName}
+          </Text>
+        )}
+        <View style={styles.inputWrapper}>
           <TextInput
             style={[styles.input, errors.recipientEmail && styles.inputError]}
             value={formData.recipientEmail}
             onChangeText={(text) => onChangeField('recipientEmail', text)}
-            placeholder="friend@email.com"
+            placeholder="Friend's email"
+            placeholderTextColor="#a1a3a4"
             testID="recipient-email-input"
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
           />
-          {errors.recipientEmail && (
-            <Text style={styles.errorText} testID="recipient-email-error">
-              {errors.recipientEmail}
-            </Text>
-          )}
         </View>
+        {errors.recipientEmail && (
+          <Text style={styles.errorText} testID="recipient-email-error">
+            {errors.recipientEmail}
+          </Text>
+        )}
       </View>
 
-      <Text style={styles.sectionTitle}>Message:</Text>
-      <View style={styles.field}>
-        <TextInput
-          style={[styles.input, styles.messageInput, errors.message && styles.inputError]}
-          value={formData.message}
-          onChangeText={(text) => onChangeField('message', text)}
-          placeholder="Write a cute message to go with your boop..."
-          testID="message-input"
-          multiline
-          numberOfLines={3}
-          maxLength={280}
-        />
-        <Text style={styles.charCount}>{formData.message.length}/280</Text>
+      <View style={styles.card}>
+        <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={[styles.input, styles.messageInput, errors.message && styles.inputError]}
+            value={formData.message}
+            onChangeText={(text) => onChangeField('message', text)}
+            placeholder="Write something nice..."
+            placeholderTextColor="#a1a3a4"
+            testID="message-input"
+            multiline
+            numberOfLines={4}
+            maxLength={280}
+          />
+        </View>
         {errors.message && (
           <Text style={styles.errorText} testID="message-error">
             {errors.message}
@@ -128,59 +131,65 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    gap: 16,
+  },
+  card: {
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderRadius: 16,
     padding: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  sectionTitle: {
+  sectionLabel: {
     fontSize: 16,
-    fontFamily: 'Quattrocento-Bold',
-    color: '#6b7280',
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  fieldGroup: {
-    backgroundColor: '#f9fafb',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-  },
-  field: {
+    fontFamily: 'QuattrocentoSans-Bold',
+    color: '#34373a',
+    letterSpacing: 1,
     marginBottom: 12,
+    textTransform: 'uppercase',
   },
-  label: {
+    disclaimer: {
     fontSize: 14,
     fontFamily: 'QuattrocentoSans-Bold',
-    color: '#374151',
-    marginBottom: 6,
+    color: '#34373a',
+    letterSpacing: 1,
+    marginBottom: 12,
+    textTransform: 'none',
+  },
+  inputWrapper: {
+    marginBottom: 8,
   },
   input: {
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 8,
-    padding: 12,
+    borderColor: '#e5e7eb',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontSize: 16,
     fontFamily: 'QuattrocentoSans-Regular',
-    color: '#1f2937',
+    color: '#34373a',
   },
   inputError: {
-    borderColor: '#ef4444',
+    borderColor: '#f87171',
     borderWidth: 2,
   },
   messageInput: {
-    height: 80,
+    height: 100,
     textAlignVertical: 'top',
+    paddingTop: 12,
   },
   errorText: {
     fontFamily: 'QuattrocentoSans-Regular',
-    color: '#ef4444',
-    fontSize: 12,
-    marginTop: 4,
-  },
-  charCount: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#9ca3af',
-    fontSize: 12,
-    textAlign: 'right',
-    marginTop: 4,
+    color: '#f87171',
+    fontSize: 14,
+    marginTop: -4,
+    marginBottom: 8,
+    marginLeft: 4,
   },
 });
