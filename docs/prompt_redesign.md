@@ -1,3 +1,11 @@
+# History of Design Prompts given to Claude
+
+Create a dark mode. Add a toggle that turns the screen to a dark mode design. The toggle should live in the top nav to the right of 'Contact'
+
+## Complerted 2/7/26
+
+Please move the top navigation bar which includes DogLogo, about and contact to it's own component called Nav.tsx. I would like the hero container to scroll with the form, but the nav bar to stay fixed to the top. I have also changed the code so that the DogLogo is on every page. Can you clean up my code changes?
+
 Create a tool tip that appears when the user hovers over a sendButton that is greyed out that says "There's some missing info. Make sure you've selected a dog and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
 
 On both the BoopForm and the contact page, append the labels of all required fields with an '*' that is this color: #f87171.
@@ -12,7 +20,7 @@ In a new section at the bottom of the about page, add the words:  "Appreciate th
 
 
 
-## Completed 2/6
+## Completed 2/6/26
 
 Use the attached screenshot as the basis for a UI redesign.
 Redesign the application's **visual style, layout, spacing, and component expression** to match the **theme and design language** shown in the image. The heart icon on the image will replace the checkmark in the current design and can be animated when clicked. 

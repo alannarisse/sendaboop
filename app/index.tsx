@@ -14,6 +14,7 @@ import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
 import { DogSelector } from '@/components/DogSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
+import { Header } from '@/components/Header';
 import { Tooltip } from '@/components/Tooltip';
 import { Dog } from '@/lib/dogs';
 import { sendBoop } from '@/lib/api';
@@ -122,6 +123,7 @@ export default function SendBoopScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <Header />
       <DogSelector selectedDogId={selectedDog?.id ?? null} onSelectDog={handleSelectDog} />
 
       <BoopForm

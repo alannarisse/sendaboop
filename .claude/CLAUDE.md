@@ -26,7 +26,8 @@ sendaboop/
 │   └── +html.tsx           # HTML template for web (meta tags)
 │
 ├── components/             # Reusable UI components
-│   ├── Header.tsx          # Menu bar + hero header (home) or nav bar (other pages)
+│   ├── Nav.tsx             # Fixed navigation bar with DogLogo and About/Contact links
+│   ├── Header.tsx          # Hero content for home page (heart icon, title, subtitle)
 │   ├── DogSelector.tsx     # 3x4 grid of dog photos with heart selection
 │   ├── BoopForm.tsx        # Form fields for sender/recipient/message with labels
 │   ├── BoopPreview.tsx     # Preview of email (currently hidden in new design)
@@ -76,10 +77,16 @@ sendaboop/
 
 ## Key Components
 
+### Nav.tsx
+- Fixed navigation bar at top of all pages
+- Contains DogLogo (custom SVG) that links to home
+- About and Contact navigation links on the right
+- Stays fixed while page content scrolls
+
 ### Header.tsx
-- **All pages**: Thin menu bar at top with About/Contact links
-- **Home page**: Also shows centered heart icon + "Send A Boop!" title + subtitle
-- **Other pages**: Back button on left side of menu bar
+- Hero content shown only on home page
+- Centered heart icon + "Send A Boop!" title + subtitle
+- Scrolls with the page content
 
 ### DogSelector.tsx
 - Displays 12 random dogs in a 3-column grid
@@ -139,3 +146,5 @@ npx expo export --platform web
 - Added tooltip on disabled send button (web only)
 - Added bio photo to About page
 - Added Ko-fi button image to success page
+- Separated Nav component from Header for fixed navigation
+- Nav bar stays fixed while content scrolls

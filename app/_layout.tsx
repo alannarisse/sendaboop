@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Header } from '@/components/Header';
+import { Nav } from '@/components/Nav';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,31 +37,37 @@ export default function RootLayout() {
   }
 
   return (
-    <LinearGradient
-      colors={['#fff5f5', '#ffeef2', '#fff0f3']}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <StatusBar style="dark" />
-      <Header />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: 'transparent',
-          },
-        }}
+      <Nav />
+      <LinearGradient
+        colors={['#fff5f5', '#ffeef2', '#fff0f3']}
+        style={styles.content}
       >
-        <Stack.Screen name="index" />
-        <Stack.Screen name="success" />
-        <Stack.Screen name="about" />
-        <Stack.Screen name="contact" />
-      </Stack>
-    </LinearGradient>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="success" />
+          <Stack.Screen name="about" />
+          <Stack.Screen name="contact" />
+        </Stack>
+      </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#fff5f5',
+  },
+  content: {
     flex: 1,
   },
   loadingContainer: {
