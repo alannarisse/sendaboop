@@ -1,5 +1,11 @@
+import { useState } from 'react';
 import { View, Image, Pressable, StyleSheet, Text } from 'react-native';
 import { dogs, Dog } from '@/lib/dogs';
+
+function getRandomDogs(count: number): Dog[] {
+  const shuffled = [...dogs].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
 
 interface DogSelectorProps {
   selectedDogId: string | null;
@@ -7,11 +13,13 @@ interface DogSelectorProps {
 }
 
 export function DogSelector({ selectedDogId, onSelectDog }: DogSelectorProps) {
+  const [displayedDogs] = useState(() => getRandomDogs(12));
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Pick a pup to send:</Text>
       <View style={styles.grid}>
-        {dogs.map((dog) => (
+        {displayedDogs.map((dog) => (
           <Pressable
             key={dog.id}
             style={[

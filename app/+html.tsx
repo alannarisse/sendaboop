@@ -29,6 +29,10 @@ export default function Root({ children }: PropsWithChildren) {
         <meta property="twitter:image" content="https://sendaboop.app/images/og-image.png" />
         <meta name="author" content="Alanna Risse" />
         <meta name="publish_date" property="og:publish_date" content="2026-01-28T00:00:00-0600" />
+        <meta property="og:image:secure_url" content="https://sendaboop.app/images/og-image.png" /> 
+        <meta property="og:image:type" content="image/png" /> 
+        <meta property="og:image:width" content="1200" /> 
+        <meta property="og:image:height" content="630" />
 
         {/* Disable body scrolling on web */}
         <ScrollViewStyleReset />
