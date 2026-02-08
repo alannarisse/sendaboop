@@ -45,7 +45,7 @@ function createRecipientEmail(data: SendBoopRequest): string {
       <td align="center">
         <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f8b4d9; padding: 24px; text-align: center;">
+            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
               <h1 style="margin: 0; color: #1f2937; font-size: 28px;">You got a Boop! 🐾</h1>
             </td>
           </tr>
@@ -62,10 +62,10 @@ function createRecipientEmail(data: SendBoopRequest): string {
                 </p>
               </div>
               ` : ''}
-              <p style="font-size: 16px; color: #f472b6; margin: 0 0 20px; font-weight: 600;">
+              <p style="font-size: 16px; color: #f87171; margin: 0 0 20px; font-weight: 600;">
                 — ${data.senderName} sent you this boop!
               </p>
-              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f472b6; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f87171;  background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
                 Send a Boop to Someone 🐕
               </a>
             </td>
@@ -76,7 +76,7 @@ function createRecipientEmail(data: SendBoopRequest): string {
                 Sent with love via Send a Boop 🐕
               </p>
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f472b6;">Please leave me a tip at Ko-fi!</a>
+                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f87171;">Please leave me a tip at Ko-fi!</a>
               </p>
               <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
                 © Alanna Risse 2025
@@ -96,19 +96,23 @@ function createSenderEmail(data: SendBoopRequest): string {
   return `
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Boop was sent!</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #fdf2f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+
+<body
+  style="margin: 0; padding: 0; background-color: #f8f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <table width="100%"
+          style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f8b4d9; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Boop Sent! 🎉</h1>
+            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
+              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Boop Sent! 🎈</h1>
             </td>
           </tr>
           <tr>
@@ -119,12 +123,14 @@ function createSenderEmail(data: SendBoopRequest): string {
               <p style="font-size: 16px; color: #4b5563; margin: 0 0 20px;">
                 Your boop to <strong>${data.recipientName}</strong> has been sent successfully!
               </p>
-              <img src="${data.dog.url}" alt="${data.dog.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
+              <img src="${data.dog.url}" alt="${data.dog.alt}"
+                style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 20px;">
                 They'll receive a cute doggo in their inbox. You're making someone's day brighter! ✨
               </p>
-              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f472b6; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
-                Send Another Boop 🐕
+              <a href="https://sendaboop.app"
+                style="display: inline-block; background-color: #f87171; background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
+                Send Another Boop 🐶
               </a>
             </td>
           </tr>
@@ -134,7 +140,8 @@ function createSenderEmail(data: SendBoopRequest): string {
                 Sent with love via Send a Boop 🐕
               </p>
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f472b6;">Please leave me a tip at Ko-fi!</a>
+                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f87171;">Please leave me a
+                  tip at Ko-fi!</a>
               </p>
               <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
                 © Alanna Risse 2025
@@ -146,6 +153,7 @@ function createSenderEmail(data: SendBoopRequest): string {
     </tr>
   </table>
 </body>
+
 </html>
 `;
 }
@@ -224,7 +232,7 @@ function createContactEmail(data: ContactRequest): string {
       <td align="center">
         <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f8b4d9; padding: 24px; text-align: center;">
+            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
               <h1 style="margin: 0; color: #1f2937; font-size: 28px;">New Contact Form Message 📬</h1>
             </td>
           </tr>
@@ -235,7 +243,7 @@ function createContactEmail(data: ContactRequest): string {
 
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;"><strong>Email:</strong></p>
               <p style="font-size: 16px; color: #1f2937; margin: 0 0 16px;">
-                <a href="mailto:${data.email}" style="color: #f472b6;">${data.email}</a>
+                <a href="mailto:${data.email}" style="color: #f87171;">${data.email}</a>
               </p>
 
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;"><strong>Message:</strong></p>
