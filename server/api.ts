@@ -56,7 +56,7 @@ function createRecipientEmail(data: SendBoopRequest): string {
               </p>
               <img src="${data.dog.url}" alt="${data.dog.alt}" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 20px;">
               ${data.message ? `
-              <div style="background-color: #fdf2f8; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+              <div style="background-color: #f8f0f0; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="font-size: 16px; color: #4b5563; margin: 0; font-style: italic;">
                   "${data.message}"
                 </p>
@@ -71,7 +71,7 @@ function createRecipientEmail(data: SendBoopRequest): string {
             </td>
           </tr>
           <tr>
-            <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
+            <td style="background-color: #f8f0f0; padding: 16px; text-align: center;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0 0 8px;">
                 Sent with love via Send a Boop 🐕
               </p>
@@ -79,7 +79,7 @@ function createRecipientEmail(data: SendBoopRequest): string {
                 Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f87171;">Please leave me a tip at Ko-fi!</a>
               </p>
               <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
-                © Alanna Risse 2025
+                © Alanna Risse 2026
               </p>
             </td>
           </tr>
