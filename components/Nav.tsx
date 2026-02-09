@@ -26,7 +26,7 @@ export function Nav() {
   return (
     <View style={styles.navBar}>
       <View style={styles.navContent}>
-        <Pressable onPress={() => navigateTo('/')} style={styles.logoButton}>
+        <Pressable onPress={() => navigateTo('/')} style={styles.logoButton} testID="home-link">
           <DogLogo size={50} color={colors.primary} />
         </Pressable>
         <View style={styles.navLinks}>

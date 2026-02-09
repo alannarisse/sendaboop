@@ -16,8 +16,6 @@ export default function RootLayout() {
     'Quattrocento-Bold': require('@/assets/fonts/Quattrocento/Quattrocento-Bold.ttf'),
     'QuattrocentoSans-Regular': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-Regular.ttf'),
     'QuattrocentoSans-Bold': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-Bold.ttf'),
-    'QuattrocentoSans-Italic': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-Italic.ttf'),
-    'QuattrocentoSans-BoldItalic': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-BoldItalic.ttf'),
   });
 
   useEffect(() => {

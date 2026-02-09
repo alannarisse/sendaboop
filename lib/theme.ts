@@ -61,9 +61,8 @@ export const fonts = {
     serifBold: 'Quattrocento-Bold',
     sansRegular: 'QuattrocentoSans-Regular',
     sansBold: 'QuattrocentoSans-Bold',
-    sansItalic: 'QuattrocentoSans-Italic',
-    sansBoldItalic: 'QuattrocentoSans-BoldItalic',
   },
+  // removed italics from _layout.tsx
 
   // Font sizes
   size: {

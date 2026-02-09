@@ -6,34 +6,21 @@ Create a dark mode. Add a toggle that turns the screen to a dark mode design. Th
 Create a design system once I created the dark mode.
 
 ## 2/9
-I would like the ability for users to add an icon to their homescreen. I've created an image: 'public/images/homescreen-icon.png' and I've created a manifest.json in the root directory. what else needs to heppen to make this available to my users on their smartphones?
+Updated playwright test scripts
+
+removed italic fonts from _layout.tsx
+'QuattrocentoSans-Italic': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-Italic.ttf'),
+'QuattrocentoSans-BoldItalic': require('@/assets/fonts/Quattrocento_Sans/QuattrocentoSans-BoldItalic.ttf'),
+
+Added PWA icons 
 
 iOS: Tap Share → "Add to Home Screen"
 Android: Tap the menu → "Add to Home Screen" (or they may get an automatic prompt)
 
 ## 2/8
-I am hoping the resend api has the ability to do this. Instead of sending the email straight from tyhe website, I would like to send the sender a verification email. That verification email would have a link in it that would verify the sender is using a real email that they have access to. When they click the link, it would send their boop to their friend and send their email that confirms their boop was sent.
+Instead of sending the email straight from tyhe website, I would like to send the sender a verification email. That verification email would have a link in it that would verify the sender is using a real email that they have access to. When they click the link, it would send their boop to their friend and send their email that confirms their boop was sent.
 
 
-questions: [
-{
-"question": "For token storage, should I use in-memory only (simpler, but used tokens reset on server restart), or add Vercel KV for persistence (tokens stay used even after restart)?",
-"header": "Storage",
-"options": [
-{
-"label": "In-memory only (Recommended)",
-"description": "Simple Map to track used tokens. Resets on server restart, but 24h expiration makes this low risk."
-},
-{
-"label": "Vercel KV (Redis)",
-"description": "Persistent storage for used tokens. More robust but adds a dependency and requires setup."
-}
-],
-"multiSelect": false
-}
-] collapse
-
-ran out of tokens
 Todo List Update:
 ✅ Add dependencies to server (jose, express-rate-limit)
 ✅ Update /server/api.ts with verification endpoints and email template

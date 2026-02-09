@@ -38,7 +38,13 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Send A Boop" />
-        <link rel="apple-touch-icon" href="/images/homescreen-icon.png" />
+        <link rel="apple-touch-icon" href="/images/homescreen-icon-192.png" />
+        <link rel="apple-touch-icon" href="/images/touch-icon-152.png" sizes="152x152" />
+        <link rel="apple-touch-icon" href="/images/homescreen-icon-72.png" sizes="72x72" />
+        <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-180.png"/>
+        <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-167x167.png"/>
+        <link rel="apple-touch-startup-image" href="images/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/>
+
         {/* Disable body scrolling on web */}
         <ScrollViewStyleReset />
 

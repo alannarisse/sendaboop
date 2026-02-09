@@ -68,14 +68,14 @@ export default function VerifyScreen() {
   return (
     <View style={styles.container}>
       {state === 'loading' && (
-        <View style={styles.content}>
+        <View style={styles.content} testID="verify-loading">
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={styles.loadingText}>Verifying your boop...</Text>
         </View>
       )}
 
       {state === 'success' && (
-        <View style={styles.content}>
+        <View style={styles.content} testID="verify-success">
           <View style={styles.iconWrapper}>
             <HeartIcon size={56} color={colors.primary} />
           </View>
@@ -114,7 +114,7 @@ export default function VerifyScreen() {
       )}
 
       {state === 'error' && (
-        <View style={styles.content}>
+        <View style={styles.content} testID="verify-error">
           <View style={styles.iconWrapper}>
             <ErrorIcon size={56} color={colors.primary} />
           </View>
