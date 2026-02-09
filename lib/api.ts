@@ -13,7 +13,15 @@ export interface SendBoopRequest {
 
 export interface SendBoopResponse {
   success: boolean;
+  pendingVerification?: boolean;
   message?: string;
+  error?: string;
+}
+
+export interface VerifyBoopResponse {
+  success: boolean;
+  recipientName?: string;
+  dogId?: string;
   error?: string;
 }
 
@@ -32,4 +40,21 @@ export async function sendBoop(data: SendBoopRequest): Promise<SendBoopResponse>
   }
 
   return response.json();
+}
+
+export async function verifyBoop(token: string): Promise<VerifyBoopResponse> {
+  const response = await fetch(`${API_URL}/api/verify-boop/${encodeURIComponent(token)}`, {
+    method: 'GET',
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return {
+      success: false,
+      error: data.error || 'Verification failed',
+    };
+  }
+
+  return data;
 }

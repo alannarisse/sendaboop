@@ -106,6 +106,8 @@ export default function SendBoopScreen() {
         params: {
           recipientName: formData.recipientName,
           dogId: selectedDog.id,
+          pending: 'true',
+          senderEmail: formData.senderEmail,
         },
       });
     } catch (error) {

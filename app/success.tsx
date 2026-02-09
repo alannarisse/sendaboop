@@ -13,18 +13,81 @@ function HeartIcon({ size = 48, color = colors.primary }: { size?: number; color
   );
 }
 
+function EmailIcon({ size = 56, color = colors.primary }: { size?: number; color?: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+    </Svg>
+  );
+}
+
 export default function SuccessScreen() {
-  const { recipientName, dogId } = useLocalSearchParams<{
+  const { recipientName, dogId, pending, senderEmail } = useLocalSearchParams<{
     recipientName: string;
     dogId: string;
+    pending?: string;
+    senderEmail?: string;
   }>();
 
+  const isPending = pending === 'true';
   const dog = dogId ? getDogById(dogId) : null;
 
   const handleSendAnother = () => {
     router.replace('/');
   };
 
+  // Pending verification state
+  if (isPending) {
+    return (
+      <View style={styles.container} testID="success-screen">
+        <View style={styles.content}>
+          <View style={styles.heartWrapper}>
+            <EmailIcon size={56} color={colors.primary} />
+          </View>
+          <Text style={styles.title}>Check Your Email!</Text>
+          <Text style={styles.subtitle}>
+            We've sent a verification email to{'\n'}
+            <Text style={styles.emailHighlight}>{senderEmail}</Text>
+          </Text>
+
+          {dog && (
+            <View style={styles.imageContainer}>
+              <Image source={dog.image} style={styles.dogImage} />
+            </View>
+          )}
+
+          <Text style={styles.description}>
+            Click the link in the email to send your boop to {recipientName}.
+            The link expires in 24 hours.
+          </Text>
+
+          <Pressable
+            onPress={handleSendAnother}
+            testID="send-another-button"
+            style={({ pressed }) => [
+              styles.buttonWrapper,
+              pressed && styles.buttonPressed,
+            ]}
+          >
+            <LinearGradient
+              colors={gradients.buttonPrimaryAlt.colors}
+              start={gradients.buttonPrimaryAlt.start}
+              end={gradients.buttonPrimaryAlt.end}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Send Another Boop</Text>
+            </LinearGradient>
+          </Pressable>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Made with love by Alanna Risse</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // Confirmed state (after verification)
   return (
     <View style={styles.container} testID="success-screen">
       <View style={styles.content}>
@@ -122,6 +185,10 @@ const styles = StyleSheet.create({
     color: colors.text.light,
     textAlign: 'center',
     marginBottom: spacing['6xl'],
+  },
+  emailHighlight: {
+    fontFamily: fonts.family.sansBold,
+    color: colors.primary,
   },
   imageContainer: {
     width: 180,
