@@ -10,8 +10,8 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
         {/* Primary Meta Tags */}
-        <title>Send a Boop - Brighten Someone's Day with a Cute Dog</title>
-        <meta name="title" content="Send a Boop - Brighten Someone's Day with a Cute Dog" />
+        <title>Send a Boop - Cute Dog Emails to Your Friends</title>
+        <meta name="title" content="Send a Boop - Brighten Someone's Day with a Cute Dog Email" />
         <meta name="description" content="Send a free, fun email to a friend featuring an adorable dog and a personal message. No strings attached - just pure joy!" />
 
         {/* Open Graph / Facebook */}
@@ -33,7 +33,12 @@ export default function Root({ children }: PropsWithChildren) {
         <meta property="og:image:type" content="image/png" /> 
         <meta property="og:image:width" content="1200" /> 
         <meta property="og:image:height" content="630" />
-
+        {/* PWA / Add to Homescreen */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Send A Boop" />
+        <link rel="apple-touch-icon" href="/images/homescreen-icon.png" />
         {/* Disable body scrolling on web */}
         <ScrollViewStyleReset />
 
