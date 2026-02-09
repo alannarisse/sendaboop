@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Nav } from '@/components/Nav';
+import { colors, gradients } from '@/lib/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,10 +29,10 @@ export default function RootLayout() {
   if (!fontsLoaded) {
     return (
       <LinearGradient
-        colors={['#fff5f5', '#ffeef2', '#fff0f3']}
+        colors={gradients.background.colors}
         style={styles.loadingContainer}
       >
-        <ActivityIndicator size="large" color="#f87171" />
+        <ActivityIndicator size="large" color={colors.primary} />
       </LinearGradient>
     );
   }
@@ -41,7 +42,7 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <Nav />
       <LinearGradient
-        colors={['#fff5f5', '#ffeef2', '#fff0f3']}
+        colors={gradients.background.colors}
         style={styles.content}
       >
         <Stack
@@ -65,7 +66,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff5f5',
+    backgroundColor: colors.background.gradient[0],
   },
   content: {
     flex: 1,

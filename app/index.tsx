@@ -18,10 +18,11 @@ import { Header } from '@/components/Header';
 import { Tooltip } from '@/components/Tooltip';
 import { Dog } from '@/lib/dogs';
 import { sendBoop } from '@/lib/api';
+import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
 function PaperPlaneIcon() {
   return (
-    <Svg width={20} height={20} viewBox="0 0 24 24" fill="white">
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill={colors.white}>
       <Path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
     </Svg>
   );
@@ -153,13 +154,13 @@ export default function SendBoopScreen() {
             ]}
           >
             <LinearGradient
-              colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+              colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
+              start={gradients.buttonPrimary.start}
+              end={gradients.buttonPrimary.end}
               style={styles.sendButton}
             >
               {isLoading ? (
-                <ActivityIndicator color="white" />
+                <ActivityIndicator color={colors.white} />
               ) : (
                 <View style={styles.sendButtonContent}>
                   <PaperPlaneIcon />
@@ -177,59 +178,55 @@ export default function SendBoopScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.transparent,
   },
   content: {
-    paddingBottom: 40,
+    paddingBottom: spacing['9xl'],
   },
   errorContainer: {
-    marginHorizontal: 16,
-    marginTop: 8,
-    padding: 12,
-    backgroundColor: 'rgba(254, 242, 242, 0.9)',
-    borderRadius: 12,
+    marginHorizontal: spacing['3xl'],
+    marginTop: spacing.md,
+    padding: spacing.xl,
+    backgroundColor: colors.background.error,
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: '#fecaca',
+    borderColor: colors.border.errorLight,
   },
   apiError: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#dc2626',
+    fontFamily: fonts.family.sansRegular,
+    color: colors.primaryDark,
     textAlign: 'center',
-    fontSize: 14,
+    fontSize: fonts.size.base,
   },
   buttonContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    paddingBottom: 16,
+    paddingHorizontal: spacing['3xl'],
+    paddingTop: spacing['6xl'],
+    paddingBottom: spacing['3xl'],
   },
   sendButtonWrapper: {
-    borderRadius: 14,
+    borderRadius: borderRadius.xl,
     overflow: 'hidden',
-    shadowColor: '#8c8a8a',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 6,
+    ...shadows.button,
   },
   sendButtonPressed: {
     opacity: 0.9,
     transform: [{ scale: 0.98 }],
   },
   sendButton: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 14,
+    paddingVertical: spacing['3xl'],
+    paddingHorizontal: spacing['6xl'],
+    borderRadius: borderRadius.xl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   sendButtonContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: spacing.lg,
   },
   sendButtonText: {
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: 'white',
-    fontSize: 17,
+    fontFamily: fonts.family.sansBold,
+    color: colors.white,
+    fontSize: fonts.size.xl,
   },
 });

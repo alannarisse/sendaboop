@@ -3,10 +3,11 @@ import { View, Text, TextInput, ScrollView, StyleSheet, Pressable, ActivityIndic
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
+import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
 
-function HeartIcon({ size = 48, color = '#f87171' }: { size?: number; color?: string }) {
+function HeartIcon({ size = 48, color = colors.primary }: { size?: number; color?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
       <Path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -17,7 +18,7 @@ function HeartIcon({ size = 48, color = '#f87171' }: { size?: number; color?: st
 function RequiredLabel({ text }: { text: string }) {
   return (
     <Text style={styles.fieldLabel}>
-      {text}<Text style={styles.requiredAsterisk}>*</Text>
+      {text}<Text style={commonStyles.requiredAsterisk}>*</Text>
     </Text>
   );
 }
@@ -90,7 +91,7 @@ export default function ContactScreen() {
       <View style={styles.container}>
         <View style={styles.successContainer}>
           <View style={styles.heartWrapper}>
-            <HeartIcon size={56} color="#f87171" />
+            <HeartIcon size={56} color={colors.primary} />
           </View>
           <Text style={styles.successTitle}>Message Sent!</Text>
           <Text style={styles.successText}>
@@ -104,9 +105,9 @@ export default function ContactScreen() {
             onPress={() => router.replace('/')}
           >
             <LinearGradient
-              colors={['#fcd5ce', '#f8a4a4', '#f87171']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+              colors={gradients.buttonPrimary.colors}
+              start={gradients.buttonPrimary.start}
+              end={gradients.buttonPrimary.end}
               style={styles.homeButton}
             >
               <Text style={styles.homeButtonText}>Back to Home</Text>
@@ -136,7 +137,7 @@ export default function ContactScreen() {
               setErrors((prev) => ({ ...prev, name: undefined }));
             }}
             placeholder="Enter your name"
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={colors.text.lighter}
             autoCapitalize="words"
             autoCorrect={false}
           />
@@ -153,7 +154,7 @@ export default function ContactScreen() {
               setErrors((prev) => ({ ...prev, email: undefined }));
             }}
             placeholder="your@email.com"
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={colors.text.lighter}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
@@ -174,7 +175,7 @@ export default function ContactScreen() {
               setErrors((prev) => ({ ...prev, comments: undefined }));
             }}
             placeholder="What would you like to say?"
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={colors.text.lighter}
             multiline
             numberOfLines={6}
             maxLength={500}
@@ -210,13 +211,13 @@ export default function ContactScreen() {
           disabled={isLoading || !isFormValid}
         >
           <LinearGradient
-            colors={isFormValid ? ['#fcd5ce', '#f8a4a4', '#f87171'] : ['#aeb1b6', '#a0a2a5']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
+            colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
+            start={gradients.buttonPrimary.start}
+            end={gradients.buttonPrimary.end}
             style={styles.sendButton}
           >
             {isLoading ? (
-              <ActivityIndicator color="white" size="small" />
+              <ActivityIndicator color={colors.white} size="small" />
             ) : (
               <Text style={styles.sendButtonText}>Send</Text>
             )}
@@ -230,187 +231,171 @@ export default function ContactScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.transparent,
   },
   content: {
-    padding: 16,
-    paddingBottom: 48,
+    padding: spacing['3xl'],
+    paddingBottom: spacing['10xl'],
   },
   pageTitle: {
-    fontFamily: 'Quattrocento-Bold',
-    fontSize: 26,
-    color: '#1f2937',
-    marginBottom: 20,
+    fontFamily: fonts.family.serifBold,
+    fontSize: fonts.size['3xl'],
+    color: colors.text.dark,
+    marginBottom: spacing['5xl'],
     textAlign: 'center',
   },
-    introParagraph: {
-    fontFamily: 'Quattrocento',
-    fontSize: 16,
-    color: '#1f2937',
-    marginBottom: 20,
+  introParagraph: {
+    fontFamily: fonts.family.serifRegular,
+    fontSize: fonts.size.lg,
+    color: colors.text.dark,
+    marginBottom: spacing['5xl'],
     textAlign: 'center',
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    backgroundColor: colors.background.card,
+    borderRadius: borderRadius['2xl'],
+    padding: spacing['3xl'],
+    marginBottom: spacing['2xl'],
+    ...shadows.card,
   },
   sectionLabel: {
-    fontSize: 11,
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: '#9ca3af',
-    letterSpacing: 1,
-    marginBottom: 12,
+    fontSize: fonts.size.xs,
+    fontFamily: fonts.family.sansBold,
+    color: colors.text.lighter,
+    letterSpacing: fonts.letterSpacing.wide,
+    marginBottom: spacing.xl,
     textTransform: 'uppercase',
   },
   fieldLabel: {
-    fontSize: 14,
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: '#4b5563',
-    marginBottom: 6,
-  },
-  requiredAsterisk: {
-    color: '#f87171',
-    fontFamily: 'QuattrocentoSans-Bold',
+    fontSize: fonts.size.base,
+    fontFamily: fonts.family.sansBold,
+    color: colors.text.medium,
+    marginBottom: spacing.sm,
   },
   inputWrapper: {
-    marginBottom: 8,
+    marginBottom: spacing.md,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background.input,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#1f2937',
+    borderColor: colors.border.light,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing['2xl'],
+    paddingVertical: spacing.xl,
+    fontSize: fonts.size.md,
+    fontFamily: fonts.family.sansRegular,
+    color: colors.text.dark,
   },
   inputError: {
-    borderColor: '#f87171',
+    borderColor: colors.border.error,
     borderWidth: 2,
   },
   textArea: {
     height: 120,
     textAlignVertical: 'top',
-    paddingTop: 12,
+    paddingTop: spacing.xl,
   },
   errorText: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#f87171',
-    fontSize: 12,
+    fontFamily: fonts.family.sansRegular,
+    color: colors.primary,
+    fontSize: fonts.size.sm,
     marginTop: -4,
-    marginBottom: 8,
-    marginLeft: 4,
+    marginBottom: spacing.md,
+    marginLeft: spacing.xs,
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: 12,
-    marginTop: 8,
-    paddingHorizontal: 4,
+    gap: spacing.xl,
+    marginTop: spacing.md,
+    paddingHorizontal: spacing.xs,
   },
   cancelButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    borderRadius: 12,
+    backgroundColor: colors.button.cancel,
+    paddingVertical: spacing['2xl'],
+    paddingHorizontal: spacing['6xl'],
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: colors.border.light,
   },
   cancelButtonPressed: {
     opacity: 0.7,
   },
   cancelButtonText: {
-    fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 15,
-    color: '#6b7280',
+    fontFamily: fonts.family.sansBold,
+    fontSize: fonts.size.md,
+    color: colors.text.light,
   },
   sendButtonWrapper: {
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     overflow: 'hidden',
-    shadowColor: '#8c8a8a',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 4,
+    ...shadows.button,
   },
   buttonPressed: {
     opacity: 0.9,
     transform: [{ scale: 0.98 }],
   },
   sendButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 12,
+    paddingVertical: spacing['2xl'],
+    paddingHorizontal: spacing['7xl'],
+    borderRadius: borderRadius.lg,
     alignItems: 'center',
     minWidth: 90,
   },
   sendButtonText: {
-    fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 15,
-    color: 'white',
+    fontFamily: fonts.family.sansBold,
+    fontSize: fonts.size.md,
+    color: colors.white,
   },
   apiErrorContainer: {
-    backgroundColor: 'rgba(254, 242, 242, 0.9)',
-    borderRadius: 12,
+    backgroundColor: colors.background.error,
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: '#fecaca',
-    padding: 12,
-    marginBottom: 14,
+    borderColor: colors.border.errorLight,
+    padding: spacing.xl,
+    marginBottom: spacing['2xl'],
   },
   apiErrorText: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#dc2626',
-    fontSize: 14,
+    fontFamily: fonts.family.sansRegular,
+    color: colors.primaryDark,
+    fontSize: fonts.size.base,
     textAlign: 'center',
   },
   successContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+    padding: spacing['6xl'],
   },
   heartWrapper: {
-    marginBottom: 16,
+    marginBottom: spacing['3xl'],
   },
   successTitle: {
-    fontFamily: 'Quattrocento-Bold',
-    fontSize: 28,
-    color: '#1f2937',
-    marginBottom: 12,
+    fontFamily: fonts.family.serifBold,
+    fontSize: fonts.size['4xl'],
+    color: colors.text.dark,
+    marginBottom: spacing.xl,
   },
   successText: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    fontSize: 16,
-    color: '#6b7280',
+    fontFamily: fonts.family.sansRegular,
+    fontSize: fonts.size.lg,
+    color: colors.text.light,
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: spacing['6xl'],
   },
   homeButtonWrapper: {
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     overflow: 'hidden',
-    shadowColor: '#f87171',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 4,
+    ...shadows.buttonPrimary,
   },
   homeButton: {
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 12,
+    paddingVertical: spacing['2xl'],
+    paddingHorizontal: spacing['7xl'],
+    borderRadius: borderRadius.lg,
   },
   homeButtonText: {
-    fontFamily: 'QuattrocentoSans-Bold',
-    fontSize: 16,
-    color: 'white',
+    fontFamily: fonts.family.sansBold,
+    fontSize: fonts.size.lg,
+    color: colors.white,
   },
 });

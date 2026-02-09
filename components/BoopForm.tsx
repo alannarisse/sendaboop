@@ -1,4 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { colors, fonts, spacing, borderRadius, shadows, commonStyles } from '@/lib/theme';
 
 export interface BoopFormData {
   senderName: string;
@@ -25,7 +26,7 @@ interface BoopFormProps {
 function RequiredLabel({ text }: { text: string }) {
   return (
     <Text style={styles.fieldLabel}>
-      {text}<Text style={styles.requiredAsterisk}>*</Text>
+      {text}<Text style={commonStyles.requiredAsterisk}>*</Text>
     </Text>
   );
 }
@@ -43,7 +44,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
             value={formData.senderName}
             onChangeText={(text) => onChangeField('senderName', text)}
             placeholder="Enter your name"
-            placeholderTextColor="#a1a3a4"
+            placeholderTextColor={colors.text.placeholder}
             testID="sender-name-input"
             autoCapitalize="words"
             autoCorrect={false}
@@ -61,7 +62,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
             value={formData.senderEmail}
             onChangeText={(text) => onChangeField('senderEmail', text)}
             placeholder="your@email.com"
-            placeholderTextColor="#a1a3a4"
+            placeholderTextColor={colors.text.placeholder}
             testID="sender-email-input"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -84,7 +85,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
             value={formData.recipientName}
             onChangeText={(text) => onChangeField('recipientName', text)}
             placeholder="Enter their name"
-            placeholderTextColor="#a1a3a4"
+            placeholderTextColor={colors.text.placeholder}
             testID="recipient-name-input"
             autoCapitalize="words"
             autoCorrect={false}
@@ -102,7 +103,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
             value={formData.recipientEmail}
             onChangeText={(text) => onChangeField('recipientEmail', text)}
             placeholder="friend@email.com"
-            placeholderTextColor="#a1a3a4"
+            placeholderTextColor={colors.text.placeholder}
             testID="recipient-email-input"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -125,7 +126,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
             value={formData.message}
             onChangeText={(text) => onChangeField('message', text)}
             placeholder="Write something nice..."
-            placeholderTextColor="#a1a3a4"
+            placeholderTextColor={colors.text.placeholder}
             testID="message-input"
             multiline
             numberOfLines={4}
@@ -144,75 +145,66 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    gap: 16,
+    paddingHorizontal: spacing['3xl'],
+    paddingTop: spacing['5xl'],
+    gap: spacing['3xl'],
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    backgroundColor: colors.background.card,
+    borderRadius: borderRadius['2xl'],
+    padding: spacing['3xl'],
+    ...shadows.card,
   },
   sectionLabel: {
-    fontSize: 16,
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: '#34373a',
-    letterSpacing: 1,
-    marginBottom: 12,
+    fontSize: fonts.size.lg,
+    fontFamily: fonts.family.sansBold,
+    color: colors.text.dark,
+    letterSpacing: fonts.letterSpacing.wide,
+    marginBottom: spacing.xl,
     textTransform: 'uppercase',
   },
   disclaimer: {
-    fontSize: 14,
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: '#34373a',
-    letterSpacing: 1,
-    marginBottom: 12,
-    textTransform: 'none',
+    fontSize: fonts.size.base,
+    fontFamily: fonts.family.sansBold,
+    color: colors.text.dark,
+    letterSpacing: fonts.letterSpacing.wide,
+    marginBottom: spacing.xl,
   },
   fieldLabel: {
-    fontSize: 14,
-    fontFamily: 'QuattrocentoSans-Bold',
-    color: '#4b5563',
-    marginBottom: 6,
-  },
-  requiredAsterisk: {
-    color: '#f87171',
-    fontFamily: 'QuattrocentoSans-Bold',
+    fontSize: fonts.size.base,
+    fontFamily: fonts.family.sansBold,
+    color: colors.text.medium,
+    marginBottom: spacing.sm,
   },
   inputWrapper: {
-    marginBottom: 8,
+    marginBottom: spacing.md,
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: colors.background.input,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#34373a',
+    borderColor: colors.border.light,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing['2xl'],
+    paddingVertical: spacing.xl,
+    fontSize: fonts.size.lg,
+    fontFamily: fonts.family.sansRegular,
+    color: colors.text.dark,
   },
   inputError: {
-    borderColor: '#f87171',
+    borderColor: colors.border.error,
     borderWidth: 2,
   },
   messageInput: {
     height: 100,
     textAlignVertical: 'top',
-    paddingTop: 12,
+    paddingTop: spacing.xl,
   },
   errorText: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    color: '#f87171',
-    fontSize: 14,
+    fontFamily: fonts.family.sansRegular,
+    color: colors.primary,
+    fontSize: fonts.size.base,
     marginTop: -4,
-    marginBottom: 8,
-    marginLeft: 4,
+    marginBottom: spacing.md,
+    marginLeft: spacing.xs,
   },
 });

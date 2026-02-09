@@ -15,3 +15,6 @@ https://resend.com/
 I do not save any email addresses you input into this app for any purpose other than immediate issues that arrive with the service. I will not email any emails you use in this app. If you need to contact me, I've added a contact form on the contact page. 
 
 The Resend API only temporarily saved the email addresses it received in order to provide support for bugs and issues.
+
+## To start local sever
+npx expo start

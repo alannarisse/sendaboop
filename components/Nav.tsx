@@ -1,8 +1,9 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { router, usePathname } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { colors, fonts, spacing, borderRadius } from '@/lib/theme';
 
-function DogLogo({ size = 60, color = '#f87171' }: { size?: number; color?: string }) {
+function DogLogo({ size = 60, color = colors.primary }: { size?: number; color?: string }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 512 512">
       <Path
@@ -26,7 +27,7 @@ export function Nav() {
     <View style={styles.navBar}>
       <View style={styles.navContent}>
         <Pressable onPress={() => navigateTo('/')} style={styles.logoButton}>
-          <DogLogo size={50} color="#f87171" />
+          <DogLogo size={50} color={colors.primary} />
         </Pressable>
         <View style={styles.navLinks}>
           <Pressable onPress={() => navigateTo('/about')} style={styles.navItem}>
@@ -47,11 +48,11 @@ export function Nav() {
 
 const styles = StyleSheet.create({
   navBar: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: spacing['3xl'],
+    paddingVertical: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.05)',
-    backgroundColor: 'rgba(255, 245, 245, 0.95)',
+    borderBottomColor: colors.border.nav,
+    backgroundColor: colors.background.nav,
   },
   navContent: {
     flexDirection: 'row',
@@ -59,24 +60,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoButton: {
-    padding: 4,
+    padding: spacing.xs,
   },
   navLinks: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
+    gap: spacing['3xl'],
   },
   navItem: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
   },
   navText: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    fontSize: 14,
-    color: '#6b7280',
+    fontFamily: fonts.family.sansRegular,
+    fontSize: fonts.size.base,
+    color: colors.text.light,
   },
   navTextActive: {
-    color: '#1f2937',
-    fontFamily: 'QuattrocentoSans-Bold',
+    color: colors.text.dark,
+    fontFamily: fonts.family.sansBold,
   },
 });

@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, Linking, Image, Pressable } from 'react-native';
+import { colors, fonts, spacing, borderRadius, shadows, commonStyles } from '@/lib/theme';
 
 export default function AboutScreen() {
   const openLink = (url: string) => {
@@ -100,56 +101,52 @@ export default function AboutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.transparent,
   },
   content: {
-    padding: 16,
-    paddingBottom: 48,
+    padding: spacing['3xl'],
+    paddingBottom: spacing['10xl'],
   },
   pageTitle: {
-    fontFamily: 'Quattrocento-Bold',
-    fontSize: 26,
-    color: '#1f2937',
-    marginBottom: 20,
+    fontFamily: fonts.family.serifBold,
+    fontSize: fonts.size['3xl'],
+    color: colors.text.dark,
+    marginBottom: spacing['5xl'],
     textAlign: 'center',
   },
   card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    backgroundColor: colors.background.card,
+    borderRadius: borderRadius['2xl'],
+    padding: spacing['4xl'],
+    marginBottom: spacing['2xl'],
+    ...shadows.card,
   },
   sectionTitle: {
-    fontFamily: 'Quattrocento-Bold',
-    fontSize: 18,
-    color: '#1f2937',
-    marginBottom: 10,
+    fontFamily: fonts.family.serifBold,
+    fontSize: fonts.size['2xl'],
+    color: colors.text.dark,
+    marginBottom: spacing.lg,
   },
   bioPhoto: {
     width: '100%',
     height: 200,
-    borderRadius: 14,
-    marginBottom: 14,
+    borderRadius: borderRadius.xl,
+    marginBottom: spacing['2xl'],
   },
   paragraph: {
-    fontFamily: 'QuattrocentoSans-Regular',
-    fontSize: 15,
-    color: '#4b5563',
-    lineHeight: 24,
-    marginBottom: 10,
+    fontFamily: fonts.family.sansRegular,
+    fontSize: fonts.size.md,
+    color: colors.text.medium,
+    lineHeight: fonts.lineHeight.relaxed,
+    marginBottom: spacing.lg,
   },
   link: {
-    color: '#f87171',
-    fontFamily: 'QuattrocentoSans-Bold',
+    color: colors.primary,
+    fontFamily: fonts.family.sansBold,
   },
   kofiButton: {
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: spacing.md,
   },
   kofiButtonPressed: {
     opacity: 0.8,
