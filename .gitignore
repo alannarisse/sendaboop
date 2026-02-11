@@ -25,6 +25,7 @@ playwright/.cache/
 .DS_Store
 Thumbs.db
 notes.txt
+*.code-workspace
 
 # Build
 server/dist/
