@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { View, Image, Pressable, StyleSheet, Animated, Text } from 'react-native';
+import { View, Image, Pressable, StyleSheet, Animated, Text, Platform } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { animals, Animal, getAnimalTypes } from '@/lib/animals';
 import { colors, spacing, borderRadius, shadows, fonts } from '@/lib/theme';
@@ -13,6 +13,9 @@ function getRandomAnimals(animalList: Animal[], count: number): Animal[] {
 // Fixed initial animals for SSR - always the first 12
 const INITIAL_ANIMALS = animals.slice(0, 12);
 
+// useNativeDriver is not supported on web
+const useNativeDriver = Platform.OS !== 'web';
+
 function AnimatedHeart({ isSelected }: { isSelected: boolean }) {
   const scaleAnim = useRef(new Animated.Value(0)).current;
 
@@ -23,13 +26,13 @@ function AnimatedHeart({ isSelected }: { isSelected: boolean }) {
         toValue: 1,
         friction: 3,
         tension: 200,
-        useNativeDriver: true,
+        useNativeDriver,
       }).start();
     } else {
       Animated.timing(scaleAnim, {
         toValue: 0,
         duration: 150,
-        useNativeDriver: true,
+        useNativeDriver,
       }).start();
     }
   }, [isSelected, scaleAnim]);

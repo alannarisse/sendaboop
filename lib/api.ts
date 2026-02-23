@@ -26,12 +26,28 @@ export interface VerifyBoopResponse {
 }
 
 export async function sendBoop(data: SendBoopRequest): Promise<SendBoopResponse> {
+  // Only send the properties the server needs (exclude image which doesn't serialize)
+  const payload = {
+    animal: {
+      uid: data.animal.uid,
+      breed: data.animal.breed,
+      animal: data.animal.animal,
+      url: data.animal.url,
+      alt: data.animal.alt,
+    },
+    senderName: data.senderName,
+    senderEmail: data.senderEmail,
+    recipientName: data.recipientName,
+    recipientEmail: data.recipientEmail,
+    message: data.message,
+  };
+
   const response = await fetch(`${API_URL}/api/send-boop`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
