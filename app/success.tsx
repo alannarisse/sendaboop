@@ -2,7 +2,7 @@ import { View, Text, Image, Pressable, StyleSheet, Linking } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router, useLocalSearchParams } from 'expo-router';
-import { getDogById } from '@/lib/dogs';
+import { getAnimalByUid } from '@/lib/animals';
 import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
 function HeartIcon({ size = 48, color = colors.primary }: { size?: number; color?: string }) {
@@ -22,15 +22,15 @@ function EmailIcon({ size = 56, color = colors.primary }: { size?: number; color
 }
 
 export default function SuccessScreen() {
-  const { recipientName, dogId, pending, senderEmail } = useLocalSearchParams<{
+  const { recipientName, animalUid, pending, senderEmail } = useLocalSearchParams<{
     recipientName: string;
-    dogId: string;
+    animalUid: string;
     pending?: string;
     senderEmail?: string;
   }>();
 
   const isPending = pending === 'true';
-  const dog = dogId ? getDogById(dogId) : null;
+  const animal = animalUid ? getAnimalByUid(Number(animalUid)) : null;
 
   const handleSendAnother = () => {
     router.replace('/');
@@ -50,9 +50,9 @@ export default function SuccessScreen() {
             <Text style={styles.emailHighlight}>{senderEmail}</Text>
           </Text>
 
-          {dog && (
+          {animal && (
             <View style={styles.imageContainer}>
-              <Image source={dog.image} style={styles.dogImage} />
+              <Image source={animal.image} style={styles.animalImage} />
             </View>
           )}
 
@@ -99,15 +99,15 @@ export default function SuccessScreen() {
           {recipientName ? `${recipientName} is going to love this!` : 'Your boop is on its way!'}
         </Text>
 
-        {dog && (
+        {animal && (
           <View style={styles.imageContainer}>
-            <Image source={dog.image} style={styles.dogImage} />
+            <Image source={animal.image} style={styles.animalImage} />
           </View>
         )}
 
         <Text style={styles.description}>
-          We've sent a cute doggo to brighten their day. They'll receive an email with your
-          message and this adorable pup!
+          We've sent a cute photo to brighten their day. They'll receive an email with your
+          message and this adorable pic!
         </Text>
 
         <Pressable
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: colors.primary,
   },
-  dogImage: {
+  animalImage: {
     width: '100%',
     height: '100%',
   },

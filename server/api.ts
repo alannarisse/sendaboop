@@ -43,14 +43,16 @@ const verifyBoopLimiter = rateLimit({
 });
 
 // Types
-interface Dog {
-  id: string;
+interface Animal {
+  uid: number;
+  breed: string;
+  animal: string;
   url: string;
   alt: string;
 }
 
 interface SendBoopRequest {
-  dog: Dog;
+  animal: Animal;
   senderName: string;
   senderEmail: string;
   recipientName: string;
@@ -59,7 +61,7 @@ interface SendBoopRequest {
 }
 
 interface PendingBoopPayload {
-  dog: Dog;
+  animal: Animal;
   senderName: string;
   senderEmail: string;
   recipientName: string;
@@ -73,7 +75,7 @@ async function createVerificationToken(data: SendBoopRequest): Promise<string> {
   const tokenId = randomUUID();
 
   return new SignJWT({
-    dog: data.dog,
+    animal: data.animal,
     senderName: data.senderName,
     senderEmail: data.senderEmail,
     recipientName: data.recipientName,
@@ -135,7 +137,7 @@ function createVerificationEmail(data: SendBoopRequest, verificationUrl: string)
               <p style="font-size: 16px; color: #4b5563; margin: 0 0 20px;">
                 Click the button below to send this adorable pup to <strong>${data.recipientName}</strong>:
               </p>
-              <img src="${data.dog.url}" alt="${data.dog.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
+              <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
               ${data.message ? `
               <div style="background-color: #f8f0f0; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Your message:</p>
@@ -194,7 +196,7 @@ function createRecipientEmail(data: SendBoopRequest | PendingBoopPayload): strin
               <p style="font-size: 18px; color: #4b5563; margin: 0 0 20px;">
                 Hey ${data.recipientName}! 👋
               </p>
-              <img src="${data.dog.url}" alt="${data.dog.alt}" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 20px;">
+              <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 20px;">
               ${data.message ? `
               <div style="background-color: #f8f0f0; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="font-size: 16px; color: #4b5563; margin: 0; font-style: italic;">
@@ -263,10 +265,10 @@ function createSenderEmail(data: SendBoopRequest | PendingBoopPayload): string {
               <p style="font-size: 16px; color: #4b5563; margin: 0 0 20px;">
                 Your boop to <strong>${data.recipientName}</strong> has been sent successfully!
               </p>
-              <img src="${data.dog.url}" alt="${data.dog.alt}"
+              <img src="${data.animal.url}" alt="${data.animal.alt}"
                 style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 20px;">
-                They'll receive a cute doggo in their inbox. You're making someone's day brighter! ✨
+                They'll receive a cute photo in their inbox. You're making someone's day brighter!
               </p>
               <a href="https://sendaboop.app"
                 style="display: inline-block; background-color: #f87171; background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
@@ -306,7 +308,7 @@ app.post('/api/send-boop', sendBoopLimiter, async (req, res) => {
     const data: SendBoopRequest = req.body;
 
     // Validate required fields
-    if (!data.dog || !data.senderName || !data.senderEmail || !data.recipientName || !data.recipientEmail) {
+    if (!data.animal || !data.senderName || !data.senderEmail || !data.recipientName || !data.recipientEmail) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -396,7 +398,7 @@ app.get('/api/verify-boop/:token', verifyBoopLimiter, async (req, res) => {
     res.json({
       success: true,
       recipientName: data.recipientName,
-      dogId: data.dog.id,
+      animalUid: data.animal.uid,
     });
   } catch (error) {
     console.error('Error verifying boop:', error);

@@ -1,5 +1,16 @@
 # History of Design Prompts given to Claude
 
+## change dog to animal
+I've created a new branch for these changes called IN-5-dog-animal-change
+I want to be able to add more than dogs to this app so I have some requests to refactor the code a bit.
+I would like to change the id property in the DogSelector json object to breed and add a new property called uid that is a unique number starting at 0 and incrementing by 1 for every entry.
+I'd like to change the json object that holds the dogs. Instead of const dogs and DOG[] and every reference to that, I'd like to change it to const animals and Animal. 
+Basically every reference to dog, dogs, etc including file names should be changed to animal, animals, etc.
+each item in the json object should have a new property called 'animal' with the default value being 'dog'
+Below the images and above the form, I'd like to create a radio for each different type of animal in the jason file.
+We should keep the image grid to be 12 randomly selected images. There should be one additional radio button that shows each types of animals.
+
+
 ## to do after the email verification is set
 Create a dark mode. Add a toggle that turns the screen to a dark mode design. The toggle should live in the top nav to the right of 'Contact'.
 

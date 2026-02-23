@@ -1,19 +1,19 @@
 import { View, Image, Text, StyleSheet } from 'react-native';
-import { Dog } from '@/lib/dogs';
+import { Animal } from '@/lib/animals';
 
 interface BoopPreviewProps {
-  dog: Dog;
+  animal: Animal;
   message: string;
   senderName: string;
   recipientName: string;
 }
 
-export function BoopPreview({ dog, message, senderName, recipientName }: BoopPreviewProps) {
+export function BoopPreview({ animal, message, senderName, recipientName }: BoopPreviewProps) {
   return (
     <View style={styles.container} testID="boop-preview">
       <Text style={styles.title}>Preview:</Text>
       <View style={styles.card}>
-        <Image source={dog.image} style={styles.image} />
+        <Image source={animal.image} style={styles.image} />
         <View style={styles.content}>
           <Text style={styles.greeting}>
             Hey {recipientName || 'friend'}! 👋

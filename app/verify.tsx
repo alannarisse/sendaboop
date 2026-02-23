@@ -3,7 +3,7 @@ import { View, Text, Image, Pressable, StyleSheet, ActivityIndicator } from 'rea
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router, useLocalSearchParams } from 'expo-router';
-import { getDogById } from '@/lib/dogs';
+import { getAnimalByUid } from '@/lib/animals';
 import { verifyBoop, VerifyBoopResponse } from '@/lib/api';
 import { colors, fonts, spacing, borderRadius, shadows, gradients } from '@/lib/theme';
 
@@ -48,7 +48,7 @@ export default function VerifyScreen() {
       });
   }, [token]);
 
-  const dog = result?.dogId ? getDogById(result.dogId) : null;
+  const animal = result?.animalUid !== undefined ? getAnimalByUid(result.animalUid) : null;
 
   const getErrorMessage = (error?: string) => {
     switch (error) {
@@ -86,15 +86,15 @@ export default function VerifyScreen() {
               : 'Your boop is on its way!'}
           </Text>
 
-          {dog && (
+          {animal && (
             <View style={styles.imageContainer}>
-              <Image source={dog.image} style={styles.dogImage} />
+              <Image source={animal.image} style={styles.animalImage} />
             </View>
           )}
 
           <Text style={styles.description}>
-            We've sent a cute doggo to brighten their day. They'll receive an email with your
-            message and this adorable pup!
+            We've sent a cute photo to brighten their day. They'll receive an email with your
+            message and this adorable pic!
           </Text>
 
           <Pressable
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: colors.primary,
   },
-  dogImage: {
+  animalImage: {
     width: '100%',
     height: '100%',
   },

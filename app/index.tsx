@@ -12,11 +12,11 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
-import { DogSelector } from '@/components/DogSelector';
+import { AnimalSelector } from '@/components/AnimalSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
 import { Header } from '@/components/Header';
 import { Tooltip } from '@/components/Tooltip';
-import { Dog } from '@/lib/dogs';
+import { Animal } from '@/lib/animals';
 import { sendBoop } from '@/lib/api';
 import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
@@ -41,14 +41,14 @@ function isValidEmail(email: string): boolean {
 }
 
 export default function SendBoopScreen() {
-  const [selectedDog, setSelectedDog] = useState<Dog | null>(null);
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const [formData, setFormData] = useState<BoopFormData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const handleSelectDog = useCallback((dog: Dog) => {
-    setSelectedDog(dog);
+  const handleSelectAnimal = useCallback((animal: Animal) => {
+    setSelectedAnimal(animal);
     setApiError(null);
   }, []);
 
@@ -83,8 +83,8 @@ export default function SendBoopScreen() {
   }, [formData]);
 
   const handleSendBoop = useCallback(async () => {
-    if (!selectedDog) {
-      setApiError('Please select a dog first!');
+    if (!selectedAnimal) {
+      setApiError('Please select an animal first!');
       return;
     }
 
@@ -97,7 +97,7 @@ export default function SendBoopScreen() {
 
     try {
       await sendBoop({
-        dog: selectedDog,
+        animal: selectedAnimal,
         ...formData,
       });
 
@@ -105,7 +105,7 @@ export default function SendBoopScreen() {
         pathname: '/success',
         params: {
           recipientName: formData.recipientName,
-          dogId: selectedDog.id,
+          animalUid: String(selectedAnimal.uid),
           pending: 'true',
           senderEmail: formData.senderEmail,
         },
@@ -119,15 +119,15 @@ export default function SendBoopScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedDog, formData, validateForm]);
+  }, [selectedAnimal, formData, validateForm]);
 
-  const isFormValid = selectedDog && formData.senderName && formData.senderEmail &&
+  const isFormValid = selectedAnimal && formData.senderName && formData.senderEmail &&
     formData.recipientName && formData.recipientEmail;
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Header />
-      <DogSelector selectedDogId={selectedDog?.id ?? null} onSelectDog={handleSelectDog} />
+      <AnimalSelector selectedAnimalUid={selectedAnimal?.uid ?? null} onSelectAnimal={handleSelectAnimal} />
 
       <BoopForm
         formData={formData}
@@ -143,7 +143,7 @@ export default function SendBoopScreen() {
 
       <View style={styles.buttonContainer}>
         <Tooltip
-          text="There's some missing info. Make sure you've selected a dog and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
+          text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
           visible={!isFormValid && !isLoading}
         >
           <Pressable
@@ -166,7 +166,7 @@ export default function SendBoopScreen() {
               ) : (
                 <View style={styles.sendButtonContent}>
                   <PaperPlaneIcon />
-                  <Text style={styles.sendButtonText}>Send Dog Photo</Text>
+                  <Text style={styles.sendButtonText}>Send Boop</Text>
                 </View>
               )}
             </LinearGradient>

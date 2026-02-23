@@ -1,9 +1,9 @@
-import { Dog } from './dogs';
+import { Animal } from './animals';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface SendBoopRequest {
-  dog: Dog;
+  animal: Animal;
   senderName: string;
   senderEmail: string;
   recipientName: string;
@@ -21,7 +21,7 @@ export interface SendBoopResponse {
 export interface VerifyBoopResponse {
   success: boolean;
   recipientName?: string;
-  dogId?: string;
+  animalUid?: number;
   error?: string;
 }
 

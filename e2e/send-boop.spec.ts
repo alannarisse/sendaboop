@@ -5,13 +5,13 @@ test.describe('Send a Boop - Main Page', () => {
     await page.goto('/');
   });
 
-  test('should display the main screen with dog selector and form', async ({ page }) => {
+  test('should display the main screen with animal selector and form', async ({ page }) => {
     // Check header content
     await expect(page.locator('text=Send A Boop!')).toBeVisible();
 
-    // Check dog grid is displayed (dogs are randomized, so check for first few from static list)
-    const dogGrid = page.locator('[data-testid^="dog-"]');
-    await expect(dogGrid.first()).toBeVisible();
+    // Check animal grid is displayed (animals are randomized, so check for first few from static list)
+    const animalGrid = page.locator('[data-testid^="animal-"]');
+    await expect(animalGrid.first()).toBeVisible();
 
     // Check form fields are present
     await expect(page.getByTestId('sender-name-input')).toBeVisible();
@@ -25,19 +25,19 @@ test.describe('Send a Boop - Main Page', () => {
     await expect(sendButton).toBeVisible();
   });
 
-  test('should allow selecting a dog and show heart badge', async ({ page }) => {
-    // Click on first available dog
-    const firstDog = page.locator('[data-testid^="dog-"]').first();
-    await firstDog.click();
+  test('should allow selecting an animal and show heart badge', async ({ page }) => {
+    // Click on first available animal
+    const firstAnimal = page.locator('[data-testid^="animal-"]').first();
+    await firstAnimal.click();
 
-    // Check that the dog has the selected style (coral border)
+    // Check that the animal has the selected style (coral border)
     // The component applies a different borderColor when selected
-    await expect(firstDog).toHaveCSS('border-color', 'rgb(248, 113, 113)');
+    await expect(firstAnimal).toHaveCSS('border-color', 'rgb(248, 113, 113)');
   });
 
   test('should show validation errors for empty required fields on submit attempt', async ({ page }) => {
-    // Select a dog first
-    await page.locator('[data-testid^="dog-"]').first().click();
+    // Select an animal first
+    await page.locator('[data-testid^="animal-"]').first().click();
 
     // Fill all fields first to enable button
     await page.getByTestId('sender-name-input').fill('Test');
@@ -81,8 +81,8 @@ test.describe('Send a Boop - Main Page', () => {
     await page.getByTestId('recipient-name-input').fill('Jane');
     await page.getByTestId('recipient-email-input').fill('jane@example.com');
 
-    // Select a dog
-    await page.locator('[data-testid^="dog-"]').first().click();
+    // Select an animal
+    await page.locator('[data-testid^="animal-"]').first().click();
 
     // Try to submit
     await page.getByTestId('send-button').click();
@@ -98,8 +98,8 @@ test.describe('Send a Boop - Main Page', () => {
     await page.getByTestId('recipient-name-input').fill('Jane');
     await page.getByTestId('recipient-email-input').fill('not-an-email');
 
-    // Select a dog
-    await page.locator('[data-testid^="dog-"]').first().click();
+    // Select an animal
+    await page.locator('[data-testid^="animal-"]').first().click();
 
     // Try to submit
     await page.getByTestId('send-button').click();
@@ -119,14 +119,14 @@ test.describe('Send a Boop - Main Page', () => {
     expect(value.length).toBeLessThanOrEqual(280);
   });
 
-  test('should keep send button disabled when no dog is selected', async ({ page }) => {
-    // Fill all form fields without selecting dog
+  test('should keep send button disabled when no animal is selected', async ({ page }) => {
+    // Fill all form fields without selecting animal
     await page.getByTestId('sender-name-input').fill('John');
     await page.getByTestId('sender-email-input').fill('john@example.com');
     await page.getByTestId('recipient-name-input').fill('Jane');
     await page.getByTestId('recipient-email-input').fill('jane@example.com');
 
-    // Button should still be disabled without dog selection (React Native Web uses aria-disabled)
+    // Button should still be disabled without animal selection (React Native Web uses aria-disabled)
     const sendButton = page.getByTestId('send-button');
     await expect(sendButton).toHaveAttribute('aria-disabled', 'true');
   });
@@ -145,8 +145,8 @@ test.describe('Send a Boop - Main Page', () => {
       });
     });
 
-    // Select a dog
-    await page.locator('[data-testid^="dog-"]').first().click();
+    // Select an animal
+    await page.locator('[data-testid^="animal-"]').first().click();
 
     // Fill form
     await page.getByTestId('sender-name-input').fill('Test Sender');
@@ -174,8 +174,8 @@ test.describe('Send a Boop - Main Page', () => {
       });
     });
 
-    // Select a dog
-    await page.locator('[data-testid^="dog-"]').first().click();
+    // Select an animal
+    await page.locator('[data-testid^="animal-"]').first().click();
 
     // Fill form
     await page.getByTestId('sender-name-input').fill('Test Sender');
@@ -204,7 +204,7 @@ test.describe('Send a Boop - Main Page', () => {
     });
 
     // Complete the flow
-    await page.locator('[data-testid^="dog-"]').first().click();
+    await page.locator('[data-testid^="animal-"]').first().click();
     await page.getByTestId('sender-name-input').fill('Sender');
     await page.getByTestId('sender-email-input').fill('sender@test.com');
     await page.getByTestId('recipient-name-input').fill('Recipient');
@@ -234,7 +234,7 @@ test.describe('Verify Page', () => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ success: true, recipientName: 'Test', dogId: 'corgi' }),
+        body: JSON.stringify({ success: true, recipientName: 'Test', animalUid: 1 }),
       });
     });
 
@@ -251,7 +251,7 @@ test.describe('Verify Page', () => {
         body: JSON.stringify({
           success: true,
           recipientName: 'Test Friend',
-          dogId: 'corgi',
+          animalUid: 1,
         }),
       });
     });
@@ -340,7 +340,7 @@ test.describe('Verify Page', () => {
         body: JSON.stringify({
           success: true,
           recipientName: 'Test',
-          dogId: 'corgi',
+          animalUid: 1,
         }),
       });
     });
@@ -351,8 +351,8 @@ test.describe('Verify Page', () => {
     await expect(page.locator('text=Boop Sent!')).toBeVisible();
     await page.locator('text=Send Another Boop').click();
 
-    // Should be back on main screen (check for dog selector which is unique to home)
-    await expect(page.locator('[data-testid^="dog-"]').first()).toBeVisible();
+    // Should be back on main screen (check for animal selector which is unique to home)
+    await expect(page.locator('[data-testid^="animal-"]').first()).toBeVisible();
   });
 
   test('should navigate home from error state', async ({ page }) => {
@@ -374,8 +374,8 @@ test.describe('Verify Page', () => {
     await expect(page.locator('text=Oops!')).toBeVisible();
     await page.locator('text=Try Again').click();
 
-    // Should be back on main screen (check for dog selector which is unique to home)
-    await expect(page.locator('[data-testid^="dog-"]').first()).toBeVisible();
+    // Should be back on main screen (check for animal selector which is unique to home)
+    await expect(page.locator('[data-testid^="animal-"]').first()).toBeVisible();
   });
 });
 
@@ -394,9 +394,9 @@ test.describe('Navigation', () => {
 
   test('should navigate home from About page via logo', async ({ page }) => {
     await page.goto('/about');
-    // Click the dog logo to go home
+    // Click the logo to go home
     await page.locator('[data-testid="home-link"]').click();
-    // Should be back on main screen (check for dog selector which is unique to home)
-    await expect(page.locator('[data-testid^="dog-"]').first()).toBeVisible();
+    // Should be back on main screen (check for animal selector which is unique to home)
+    await expect(page.locator('[data-testid^="animal-"]').first()).toBeVisible();
   });
 });
