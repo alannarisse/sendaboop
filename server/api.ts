@@ -126,15 +126,15 @@ function createVerificationEmail(data: SendBoopRequest, verificationUrl: string)
         <table width="100%" style="max-width: 500px; background-color: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
             <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #999999; font-size: 28px;">🐈‍⬛ Verify Your Boop 🐾</h1>
+              <h1 style="margin: 0; color: #666666; font-size: 28px;">🐈‍⬛ Verify Your Boop 🐾</h1>
             </td>
           </tr>
           <tr>
             <td style="padding: 24px; text-align: center;">
-              <p style="font-size: 18px; color: #999999; margin: 0 0 20px;">
+              <p style="font-size: 18px; color: #666666; margin: 0 0 20px;">
                 Hey ${data.senderName}!
               </p>
-              <p style="font-size: 16px; color: #999999; margin: 0 0 20px;">
+              <p style="font-size: 16px; color: #666666; margin: 0 0 20px;">
                 There's one more important step! Click the button below to send this adorable pup to <strong>${data.recipientName}</strong>:
               </p>
               <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">

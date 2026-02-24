@@ -25,7 +25,7 @@ export function Header() {
         <HeartIcon size={44} color={colors.primary} />
       </View>
       <Text style={styles.heroTitle}>Send A Boop!</Text>
-      <Text style={styles.heroSubtitle}>Pick your favorite doggo to brighten someone's day</Text>
+      <Text style={styles.heroSubtitle}>Pick your favorite furball to brighten someone's day</Text>
     </View>
   );
 }
