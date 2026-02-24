@@ -119,23 +119,23 @@ function createVerificationEmail(data: SendBoopRequest, verificationUrl: string)
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verify Your Boop</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f9ecec; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
     <tr>
       <td align="center">
-        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Verify Your Boop</h1>
+            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
+              <h1 style="margin: 0; color: #999999; font-size: 28px;">🐈‍⬛ Verify Your Boop 🐾</h1>
             </td>
           </tr>
           <tr>
             <td style="padding: 24px; text-align: center;">
-              <p style="font-size: 18px; color: #4b5563; margin: 0 0 20px;">
+              <p style="font-size: 18px; color: #999999; margin: 0 0 20px;">
                 Hey ${data.senderName}!
               </p>
-              <p style="font-size: 16px; color: #4b5563; margin: 0 0 20px;">
-                Click the button below to send this adorable pup to <strong>${data.recipientName}</strong>:
+              <p style="font-size: 16px; color: #999999; margin: 0 0 20px;">
+                There's one more important step! Click the button below to send this adorable pup to <strong>${data.recipientName}</strong>:
               </p>
               <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
               ${data.message ? `
@@ -181,13 +181,13 @@ function createRecipientEmail(data: SendBoopRequest | PendingBoopPayload): strin
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>You got a Boop!</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f9ecec; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<body style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
     <tr>
       <td align="center">
         <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
+            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
               <h1 style="margin: 0; color: #1f2937; font-size: 28px;">You got a Boop! 🐾</h1>
             </td>
           </tr>
@@ -246,14 +246,14 @@ function createSenderEmail(data: SendBoopRequest | PendingBoopPayload): string {
 </head>
 
 <body
-  style="margin: 0; padding: 0; background-color: #f9ecec; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
     <tr>
       <td align="center">
         <table width="100%"
           style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <tr>
-            <td style="background-color: #f9d8d8; padding: 24px; text-align: center;">
+            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
               <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Boop Sent! 🎈</h1>
             </td>
           </tr>
