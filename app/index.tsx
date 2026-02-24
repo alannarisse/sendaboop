@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { AnimalSelector } from '@/components/AnimalSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
 import { Header } from '@/components/Header';
@@ -41,11 +41,25 @@ function isValidEmail(email: string): boolean {
 }
 
 export default function SendBoopScreen() {
+  // Check for pre-filled recipient from "boop back" link
+  const { to, toName } = useLocalSearchParams<{ to?: string; toName?: string }>();
+
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const [formData, setFormData] = useState<BoopFormData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+
+  // Pre-fill recipient info if coming from "boop back" link
+  useEffect(() => {
+    if (to || toName) {
+      setFormData((prev) => ({
+        ...prev,
+        recipientEmail: to || prev.recipientEmail,
+        recipientName: toName || prev.recipientName,
+      }));
+    }
+  }, [to, toName]);
 
   const handleSelectAnimal = useCallback((animal: Animal) => {
     setSelectedAnimal(animal);

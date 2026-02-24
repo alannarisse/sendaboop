@@ -204,11 +204,18 @@ function createRecipientEmail(data: SendBoopRequest | PendingBoopPayload): strin
                 </p>
               </div>
               ` : ''}
-              <p style="font-size: 16px; color: #f87171; margin: 0 0 20px; font-weight: 600;">
+              <p style="font-size: 16px; color: #f87171; margin: 0 0 8px; font-weight: 600;">
                 — ${data.senderName} sent you this boop!
               </p>
-              <a href="https://sendaboop.app" style="display: inline-block; background-color: #f87171;  background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
-                Send a Boop to Someone 🐕
+              <p style="font-size: 13px; color: #9ca3af; margin: 0 0 24px;">
+                from ${data.senderEmail}
+              </p>
+              <a href="https://sendaboop.app/?to=${encodeURIComponent(data.senderEmail)}&toName=${encodeURIComponent(data.senderName)}" style="display: inline-block; background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; margin-bottom: 12px;">
+                Send ${data.senderName} a Boop Back? 🐾
+              </a>
+              <br>
+              <a href="https://sendaboop.app" style="display: inline-block; color: #f87171; padding: 8px 16px; text-decoration: none; font-size: 13px; margin-top: 8px;">
+                or send a boop to someone else →
               </a>
             </td>
           </tr>
@@ -367,10 +374,11 @@ app.get('/api/verify-boop/:token', verifyBoopLimiter, async (req, res) => {
     // Mark token as used BEFORE sending emails (prevent race conditions)
     usedTokens.add(data.jti);
 
-    // Send email to recipient
+    // Send email to recipient (with sender's email as reply-to so they can respond)
     const recipientResult = await resend.emails.send({
       from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.recipientEmail,
+      replyTo: data.senderEmail,
       subject: `${data.senderName} sent you a Boop! 🐾`,
       html: createRecipientEmail(data),
     });
