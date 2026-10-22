@@ -225,7 +225,7 @@ function createRecipientEmail(data: SendBoopRequest | PendingBoopPayload): strin
                 Sent with love via Send a Boop 🐕
               </p>
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f87171;">Please leave me a tip at Ko-fi!</a>
+                Appreciate this app? <a href="https://sendaboop.app/contact" style="color: #f87171;">Leave me a message!</a>
               </p>
               <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
                 © Alanna Risse 2026

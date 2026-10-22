@@ -13,10 +13,10 @@ export const colors = {
 
   // Background colors
   background: {
-    gradient: ['#fff5f5', '#ffeef2', '#fff0f3'] as const,
+    gradient: ['rgb(255, 245, 245)', '#ffeef2', '#fff0f3'] as const,
     card: 'rgba(255, 255, 255, 0.85)',
     input: '#ffffff',
-    nav: 'rgba(255, 245, 245, 0.95)',
+    nav: 'rgba(255, 245, 245, 1)',
     error: 'rgba(254, 242, 242, 0.9)',
   },
 
