@@ -17,6 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sendaboop.app",
+      "associatedDomains": ["applinks:sendaboop.app"],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }

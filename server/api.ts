@@ -5,6 +5,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import { Resend } from 'resend';
 import { randomUUID } from 'crypto';
 import 'dotenv/config';
+import { createVerificationUrl } from './verification-links.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -52,6 +53,7 @@ interface Animal {
 }
 
 interface SendBoopRequest {
+  clientPlatform?: string;
   animal: Animal;
   senderName: string;
   senderEmail: string;
@@ -327,7 +329,7 @@ app.post('/api/send-boop', sendBoopLimiter, async (req, res) => {
 
     // Create verification token
     const token = await createVerificationToken(data);
-    const verificationUrl = `${APP_URL}/verify?token=${encodeURIComponent(token)}`;
+    const verificationUrl = createVerificationUrl(APP_URL, token, data.clientPlatform);
 
     // Send verification email to sender
     const result = await resend.emails.send({

@@ -1,4 +1,5 @@
 import { Animal } from './animals';
+import { Platform } from 'react-native';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -40,6 +41,7 @@ export async function sendBoop(data: SendBoopRequest): Promise<SendBoopResponse>
     recipientName: data.recipientName,
     recipientEmail: data.recipientEmail,
     message: data.message,
+    clientPlatform: Platform.OS,
   };
 
   const response = await fetch(`${API_URL}/api/send-boop`, {
