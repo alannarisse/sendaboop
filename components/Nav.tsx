@@ -1,5 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { router, usePathname } from 'expo-router';
+import { useDrafts } from '@/lib/form-drafts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { colors, fonts, spacing, borderRadius } from '@/lib/theme';
@@ -17,9 +18,10 @@ function DogLogo({ size = 60, color = colors.primary }: { size?: number; color?:
 
 export function Nav() {
   const pathname = usePathname();
+  const { confirmLeave } = useDrafts();
 
-  const navigateTo = (path: string) => {
-    if (pathname !== path) {
+  const navigateTo = async (path: string) => {
+    if (pathname !== path && await confirmLeave()) {
       router.push(path as any);
     }
   };

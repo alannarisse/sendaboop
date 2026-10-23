@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router, useLocalSearchParams } from 'expo-router';
 import { getAnimalByUid } from '@/lib/animals';
+import { DraftNotice } from '@/components/DraftNotice';
 import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
 function HeartIcon({ size = 48, color = colors.primary }: { size?: number; color?: string }) {
@@ -45,6 +46,7 @@ export default function SuccessScreen() {
             <EmailIcon size={56} color={colors.primary} />
           </View>
           <Text style={styles.title}>Check Your Email!</Text>
+          <DraftNotice sent />
           <Text style={styles.subtitle}>
             We've sent a verification email to{'\n'}
             <Text style={styles.emailHighlight}>{senderEmail}</Text>
@@ -95,6 +97,7 @@ export default function SuccessScreen() {
           <HeartIcon size={56} color={colors.primary} />
         </View>
         <Text style={styles.title}>Boop Sent!</Text>
+        <DraftNotice sent />
         <Text style={styles.subtitle}>
           {recipientName ? `${recipientName} is going to love this!` : 'Your boop is on its way!'}
         </Text>

@@ -1,15 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
 import {
   View,
-  ScrollView,
   Text,
   Pressable,
   StyleSheet,
   ActivityIndicator,
   Alert,
   Platform,
-  Keyboard,
-  KeyboardAvoidingView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
@@ -17,10 +14,14 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { AnimalSelector } from '@/components/AnimalSelector';
 import { BoopForm, BoopFormData, FormErrors } from '@/components/BoopForm';
 import { Header } from '@/components/Header';
+import { KeyboardForm } from '@/components/KeyboardForm';
 import { Tooltip } from '@/components/Tooltip';
-import { Animal } from '@/lib/animals';
+import { Animal, getAnimalByUid } from '@/lib/animals';
+import { useDrafts } from '@/lib/form-drafts';
+import { useDraftLeaveWarning } from '@/lib/use-draft-leave-warning';
+import { DraftNotice } from '@/components/DraftNotice';
 import { sendBoop } from '@/lib/api';
-import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
+import { colors, fonts, spacing, borderRadius, shadows, gradients } from '@/lib/theme';
 
 function PaperPlaneIcon() {
   return (
@@ -30,14 +31,6 @@ function PaperPlaneIcon() {
   );
 }
 
-const initialFormData: BoopFormData = {
-  senderName: '',
-  senderEmail: '',
-  recipientName: '',
-  recipientEmail: '',
-  message: '',
-};
-
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -46,45 +39,37 @@ export default function SendBoopScreen() {
   // Check for pre-filled recipient from "boop back" link
   const { to, toName } = useLocalSearchParams<{ to?: string; toName?: string }>();
 
-  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
-  const [formData, setFormData] = useState<BoopFormData>(initialFormData);
+  const { drafts, ready, update, clear } = useDrafts();
+  const formData = drafts.boop.fields;
+  const selectedAnimal = drafts.boop.animalUid === null ? null : getAnimalByUid(drafts.boop.animalUid) ?? null;
+  const setFormData = useCallback((change: (value: BoopFormData) => BoopFormData) => {
+    update('boop', (draft) => ({ ...draft, fields: change(draft.fields) }));
+  }, [update]);
+  useDraftLeaveWarning(Boolean(selectedAnimal) || Object.values(formData).some(Boolean));
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    if (Platform.OS !== 'ios') return;
-
-    const show = Keyboard.addListener('keyboardWillShow', () => setIsKeyboardVisible(true));
-    const hide = Keyboard.addListener('keyboardWillHide', () => setIsKeyboardVisible(false));
-    return () => {
-      show.remove();
-      hide.remove();
-    };
-  }, []);
-
   // Pre-fill recipient info if coming from "boop back" link
   useEffect(() => {
-    if (to || toName) {
+    if (ready && (to || toName)) {
       setFormData((prev) => ({
         ...prev,
-        recipientEmail: to || prev.recipientEmail,
-        recipientName: toName || prev.recipientName,
+        recipientEmail: prev.recipientEmail || to || '',
+        recipientName: prev.recipientName || toName || '',
       }));
     }
-  }, [to, toName]);
+  }, [to, toName, ready, setFormData]);
 
   const handleSelectAnimal = useCallback((animal: Animal) => {
-    setSelectedAnimal(animal);
+    update('boop', (draft) => ({ ...draft, animalUid: animal.uid }));
     setApiError(null);
-  }, []);
+  }, [update]);
 
   const handleChangeField = useCallback((field: keyof BoopFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
     setApiError(null);
-  }, []);
+  }, [setFormData]);
 
   const validateForm = useCallback((): boolean => {
     const newErrors: FormErrors = {};
@@ -124,10 +109,13 @@ export default function SendBoopScreen() {
     setApiError(null);
 
     try {
-      await sendBoop({
+      const response = await sendBoop({
         animal: selectedAnimal,
         ...formData,
       });
+
+      if (!response.success) throw new Error(response.error || 'Failed to send boop');
+      await clear('boop', { fields: formData, animalUid: selectedAnimal.uid });
 
       router.push({
         pathname: '/success',
@@ -147,85 +135,64 @@ export default function SendBoopScreen() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedAnimal, formData, validateForm]);
+  }, [selectedAnimal, formData, validateForm, clear]);
 
   const isFormValid = selectedAnimal && formData.senderName && formData.senderEmail &&
     formData.recipientName && formData.recipientEmail;
 
+  if (!ready) return <ActivityIndicator accessibilityLabel="Restoring your draft" />;
+
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled={Platform.OS === 'ios'}
-    >
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
-        keyboardShouldPersistTaps="handled"
-      >
-        <Header />
-        <AnimalSelector selectedAnimalUid={selectedAnimal?.uid ?? null} onSelectAnimal={handleSelectAnimal} />
+    <KeyboardForm style={styles.container} contentContainerStyle={styles.content}>
+      <Header />
+      <DraftNotice />
+      <AnimalSelector selectedAnimalUid={selectedAnimal?.uid ?? null} onSelectAnimal={handleSelectAnimal} />
 
-        <BoopForm
-          formData={formData}
-          errors={errors}
-          onChangeField={handleChangeField}
-        />
+      <BoopForm
+        formData={formData}
+        errors={errors}
+        onChangeField={handleChangeField}
+      />
 
-        {apiError && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.apiError} testID="api-error">{apiError}</Text>
-          </View>
-        )}
-
-        <View style={styles.buttonContainer}>
-          <Tooltip
-            text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
-            visible={!isFormValid && !isLoading}
-          >
-            <Pressable
-              onPress={handleSendBoop}
-              disabled={isLoading || !isFormValid}
-              testID="send-button"
-              style={({ pressed }) => [
-                styles.sendButtonWrapper,
-                pressed && isFormValid && styles.sendButtonPressed,
-              ]}
-            >
-              <LinearGradient
-                colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
-                start={gradients.buttonPrimary.start}
-                end={gradients.buttonPrimary.end}
-                style={styles.sendButton}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color={colors.white} />
-                ) : (
-                  <View style={styles.sendButtonContent}>
-                    <PaperPlaneIcon />
-                    <Text style={styles.sendButtonText}>Send Boop</Text>
-                  </View>
-                )}
-              </LinearGradient>
-            </Pressable>
-          </Tooltip>
-        </View>
-      </ScrollView>
-      {isKeyboardVisible && (
-        <View style={styles.keyboardToolbar}>
-          <Pressable
-            onPress={Keyboard.dismiss}
-            accessibilityRole="button"
-            accessibilityLabel="Dismiss keyboard"
-            testID="dismiss-keyboard-button"
-            style={styles.keyboardDoneButton}
-          >
-            <Text style={styles.keyboardDoneText}>Done</Text>
-          </Pressable>
+      {apiError && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.apiError} testID="api-error">{apiError}</Text>
         </View>
       )}
-    </KeyboardAvoidingView>
+
+      <View style={styles.buttonContainer}>
+        <Tooltip
+          text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
+          visible={!isFormValid && !isLoading}
+        >
+          <Pressable
+            onPress={handleSendBoop}
+            disabled={isLoading || !isFormValid}
+            testID="send-button"
+            style={({ pressed }) => [
+              styles.sendButtonWrapper,
+              pressed && isFormValid && styles.sendButtonPressed,
+            ]}
+          >
+            <LinearGradient
+              colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
+              start={gradients.buttonPrimary.start}
+              end={gradients.buttonPrimary.end}
+              style={styles.sendButton}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={colors.white} />
+              ) : (
+                <View style={styles.sendButtonContent}>
+                  <PaperPlaneIcon />
+                  <Text style={styles.sendButtonText}>Send Boop</Text>
+                </View>
+              )}
+            </LinearGradient>
+          </Pressable>
+        </Tooltip>
+      </View>
+    </KeyboardForm>
   );
 }
 
@@ -236,24 +203,6 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: spacing['9xl'],
-  },
-  keyboardToolbar: {
-    backgroundColor: colors.background.card,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.border.light,
-    alignItems: 'flex-end',
-    paddingHorizontal: spacing.xl,
-  },
-  keyboardDoneButton: {
-    minWidth: 64,
-    minHeight: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  keyboardDoneText: {
-    fontFamily: fonts.family.sansBold,
-    fontSize: fonts.size.lg,
-    color: colors.text.dark,
   },
   errorContainer: {
     marginHorizontal: spacing['3xl'],

@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Keyboard, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router } from 'expo-router';
+import { useDrafts } from '@/lib/form-drafts';
+import { useDraftLeaveWarning } from '@/lib/use-draft-leave-warning';
+import { DraftNotice } from '@/components/DraftNotice';
+import { KeyboardForm } from '@/components/KeyboardForm';
 import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001';
@@ -24,9 +28,12 @@ function RequiredLabel({ text }: { text: string }) {
 }
 
 export default function ContactScreen() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [comments, setComments] = useState('');
+  const { drafts, ready, update, clear } = useDrafts();
+  const { name, email, comments } = drafts.contact;
+  const setName = (value: string) => update('contact', (draft) => ({ ...draft, name: value }));
+  const setEmail = (value: string) => update('contact', (draft) => ({ ...draft, email: value }));
+  const setComments = (value: string) => update('contact', (draft) => ({ ...draft, comments: value }));
+  useDraftLeaveWarning(Boolean(name || email || comments));
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -73,6 +80,8 @@ export default function ContactScreen() {
         throw new Error(errorData.error || 'Failed to send message');
       }
 
+      await clear('contact', { name, email, comments });
+      Keyboard.dismiss();
       setSubmitted(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to send message';
@@ -83,8 +92,11 @@ export default function ContactScreen() {
   };
 
   const handleCancel = () => {
+    Keyboard.dismiss();
     router.replace('/');
   };
+
+  if (!ready) return <ActivityIndicator accessibilityLabel="Restoring your draft" />;
 
   if (submitted) {
     return (
@@ -94,8 +106,9 @@ export default function ContactScreen() {
             <HeartIcon size={56} color={colors.primary} />
           </View>
           <Text style={styles.successTitle}>Message Sent!</Text>
+          <DraftNotice sent />
           <Text style={styles.successText}>
-            Thank you for reaching out. I'll get back to you as soon as possible.
+            Thank you for reaching out. I&apos;ll get back to you as soon as possible.
           </Text>
           <Pressable
             style={({ pressed }) => [
@@ -121,9 +134,10 @@ export default function ContactScreen() {
   const isFormValid = name.trim() && email.trim() && comments.trim();
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <KeyboardForm style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.pageTitle}>Get in Touch</Text>
-      <Text style={styles.introParagraph}>Questions? Thoughts? Comments? Send me an email.</Text>
+      <DraftNotice />
+      <Text style={styles.introParagraph}>Questions? Thoughts? Comments? Wishing for photos of cute birds? Send me (Alanna) an email, I would love to hear from you.</Text>
 
       <View style={styles.card}>
         <Text style={styles.sectionLabel}>YOUR INFO</Text>
@@ -224,7 +238,7 @@ export default function ContactScreen() {
           </LinearGradient>
         </Pressable>
       </View>
-    </ScrollView>
+    </KeyboardForm>
   );
 }
 

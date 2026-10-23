@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Send a Boop - Main Page', () => {
   test.beforeEach(async ({ page }) => {
@@ -35,43 +35,15 @@ test.describe('Send a Boop - Main Page', () => {
     await expect(firstAnimal).toHaveCSS('border-color', 'rgb(248, 113, 113)');
   });
 
-  test('should show validation errors for empty required fields on submit attempt', async ({ page }) => {
-    // Select an animal first
+  test('should disable sending when a required field is cleared', async ({ page }) => {
     await page.locator('[data-testid^="animal-"]').first().click();
-
-    // Fill all fields first to enable button
-    await page.getByTestId('sender-name-input').fill('Test');
-    await page.getByTestId('sender-email-input').fill('test@test.com');
-    await page.getByTestId('recipient-name-input').fill('Test');
-    await page.getByTestId('recipient-email-input').fill('test@test.com');
-
-    // Clear fields to make them empty again
+    await page.getByTestId('sender-name-input').fill('Sender');
+    await page.getByTestId('sender-email-input').fill('sender@example.com');
+    await page.getByTestId('recipient-name-input').fill('Friend');
+    await page.getByTestId('recipient-email-input').fill('friend@example.com');
+    await expect(page.getByTestId('send-button')).not.toHaveAttribute('aria-disabled', 'true');
     await page.getByTestId('sender-name-input').fill('');
-    await page.getByTestId('sender-email-input').fill('');
-    await page.getByTestId('recipient-name-input').fill('');
-    await page.getByTestId('recipient-email-input').fill('');
-
-    // Fill just enough to enable the button (the form validation happens on submit)
-    await page.getByTestId('sender-name-input').fill('A');
-    await page.getByTestId('sender-email-input').fill('a@a.com');
-    await page.getByTestId('recipient-name-input').fill('B');
-    await page.getByTestId('recipient-email-input').fill('b@b.com');
-
-    // Clear to trigger validation on submit
-    await page.getByTestId('sender-name-input').fill('');
-
-    // The button is now disabled again, so let's test a different way
-    // Fill all fields, then submit, then check if form clears on error
-    await page.getByTestId('sender-name-input').fill('John');
-    await page.getByTestId('sender-email-input').fill('invalid'); // invalid email
-    await page.getByTestId('recipient-name-input').fill('Jane');
-    await page.getByTestId('recipient-email-input').fill('jane@test.com');
-
-    // Submit form
-    await page.getByTestId('send-button').click();
-
-    // Check for email validation error
-    await expect(page.getByTestId('sender-email-error')).toBeVisible();
+    await expect(page.getByTestId('send-button')).toHaveAttribute('aria-disabled', 'true');
   });
 
   test('should show validation error for invalid sender email', async ({ page }) => {
@@ -134,6 +106,7 @@ test.describe('Send a Boop - Main Page', () => {
   test('should complete form submission and show pending verification screen', async ({ page }) => {
     // Mock the API endpoint to return pending verification
     await page.route('**/api/send-boop', async (route) => {
+      expect(route.request().postDataJSON()).toMatchObject({ clientPlatform: 'web' });
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -217,12 +190,8 @@ test.describe('Send a Boop - Main Page', () => {
     // Click send another button
     await page.getByTestId('send-another-button').click();
 
-    // Wait for navigation to complete
-    await page.waitForLoadState('networkidle');
-
-    // Expo Router may keep screens in DOM, so check for empty form (the new screen)
-    // The new screen's input should be empty
-    await expect(page.getByRole('textbox', { name: 'Enter your name' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId('sender-name-input').filter({ visible: true })).toHaveValue('');
+    await expect(page.getByTestId('message-input').filter({ visible: true })).toHaveValue('');
   });
 });
 
@@ -389,7 +358,7 @@ test.describe('Navigation', () => {
   test('should navigate to Contact page', async ({ page }) => {
     await page.goto('/');
     await page.locator('text=Contact').click();
-    await expect(page.locator('text=Get In Touch')).toBeVisible();
+    await expect(page.getByText('Get in Touch', { exact: true })).toBeVisible();
   });
 
   test('should navigate home from About page via logo', async ({ page }) => {

@@ -5,7 +5,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { DraftsProvider } from '@/lib/form-drafts';
 import { Nav } from '@/components/Nav';
+import { KeyboardFormProvider } from '@/components/KeyboardForm';
 import { colors, gradients } from '@/lib/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -36,28 +38,32 @@ export default function RootLayout() {
   }
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="dark" />
-      <Nav />
-      <LinearGradient
-        colors={gradients.background.colors}
-        style={styles.content}
-      >
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: {
-              backgroundColor: 'transparent',
-            },
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen name="success" />
-          <Stack.Screen name="about" />
-          <Stack.Screen name="contact" />
-        </Stack>
-      </LinearGradient>
-    </View>
+    <DraftsProvider>
+      <KeyboardFormProvider>
+        <View style={styles.container}>
+          <StatusBar style="dark" />
+          <Nav />
+          <LinearGradient
+            colors={gradients.background.colors}
+            style={styles.content}
+          >
+            <Stack
+              screenOptions={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            >
+              <Stack.Screen name="index" />
+              <Stack.Screen name="success" />
+              <Stack.Screen name="about" />
+              <Stack.Screen name="contact" />
+            </Stack>
+          </LinearGradient>
+        </View>
+      </KeyboardFormProvider>
+    </DraftsProvider>
   );
 }
 

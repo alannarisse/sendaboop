@@ -15,8 +15,8 @@ export default function AboutScreen() {
         <Text style={styles.paragraph}>
           This project was originally imagined while teaching a UX/UI class at Portland State.
           It was a demo project for an assignment using Figma to design an app concept. I liked
-          the idea so much that I wanted to make it real. The Internet kinda sucks now. Everyone
-          wants something from you. I just want to brighten people's day with an app that, for
+          the idea so much that I wanted to make it real. I get bummed out at the internet sometimes and long for the 90s internet in some ways but not others. Everyone
+          wants something from you now. It's harder to find things that are just fun and free. I just want to brighten people's day with an app that, for
           once, doesn't want anything in return. You'll find my privacy policy below.
         </Text>
       </View>
@@ -29,8 +29,8 @@ export default function AboutScreen() {
           resizeMode="cover"
         />
         <Text style={styles.paragraph}>
-          Hi there! I'm Alanna Risse. I live in Portland, Oregon. I teach part-time in Portland
-          State's Graphic Design program. I've been a web developer since 1997. I have a YouTube
+          Hi there! I'm Alanna Risse. I live in Portland, Oregon. I taught part-time in Portland
+          State's Graphic Design program for 8 years. I've been a web developer since 1997. I have a YouTube
           channel at{' '}
           <Text style={styles.link} onPress={() => openLink('https://youtube.com/@AlannaRisse')}>
             youtube.com/@AlannaRisse
@@ -40,18 +40,28 @@ export default function AboutScreen() {
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.sectionTitle}>Hire Me</Text>
+        <Text style={styles.sectionTitle}>Please Hire Me</Text>
         <Text style={styles.paragraph}>
-          I am actively looking for a full-time position in Portland, Oregon or remote. You can
-          find me at{' '}
+          As of November 2026, I am actively looking for a remote full-time position as a Software Developer in Test, a Quality Assurance Engineer, QA Automation, or front-end dev. I live in Portland, Oregon so I would also be open to work in my city. I am AWS Cloud Practitioner Certified, and I've worked on a gazillion apps and websites including West Elm, Yahoo!, Gap, Inc, and many, many startups. You can
+          find all about me at{' '}
           <Text style={styles.link} onPress={() => openLink('https://alannarisse.com')}>
-            alannarisse.com
+            alannarisse.com.
+          </Text>
+          </Text>
+        <Text style={styles.paragraph}>
+          My resume can be found here{' '}
+          <Text style={styles.link} onPress={() => openLink('https://alannarisse.com/resume')}>
+            alannarisse.com/resume
           </Text>
         </Text>
       </View>
 
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Privacy Policy</Text>
+        <Text style={styles.paragraph}>
+          Unsent boops and contact messages, including names and email addresses, are saved locally
+          on your device so you can return to them. A draft is cleared after a successful send.
+        </Text>
         <Text style={styles.paragraph}>
           I am not collecting your email addresses for anything other than making sure my service
           still works. The email service I use, Resend, stores my customers' data (you and/or your

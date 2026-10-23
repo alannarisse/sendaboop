@@ -35,7 +35,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.disclaimer}>I won't save, share, sell, or use these emails!</Text>
+        <Text style={styles.disclaimer}>Emails are used to deliver your boop. Unsent drafts stay on this device.</Text>
         <Text style={styles.sectionLabel}>FROM YOU</Text>
         <View style={styles.inputWrapper}>
           <RequiredLabel text="Your name" />

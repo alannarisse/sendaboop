@@ -105,12 +105,12 @@ On a physical phone, `localhost` refers to the phone. Set `EXPO_PUBLIC_API_URL` 
 
 For local verification emails, remember that the link opens on whichever device reads the email. The current email templates and animal-image URLs also contain production links; see `server/api.ts` and `lib/animals.ts` when adapting the project to another domain.
 
-## Checks and browser tests
+## Playwright Checks and browser tests
 
 ```bash
 npx tsc --noEmit
 npm run lint
-npx playwright install chromium
+npx playwright install chromium webkit
 npm test
 ```
 
@@ -120,7 +120,17 @@ For the interactive Playwright runner:
 npm run test:ui
 ```
 
-Playwright starts or reuses the web app on port `8081`. The suite includes form validation, mocked sending and verification responses, and a URL inventory. Browser tests do not validate the native iOS keyboard or safe-area layout; check those on a simulator or physical phone.
+Playwright starts its own Expo web server on `127.0.0.1:8082`, separate from your development session. Its API URL points to an unused local port, and a shared fixture blocks any API request without an explicit mock, so the suite cannot send real emails. Each test uses a fresh browser context and local storage.
+
+The suite runs in desktop Chromium and an iPhone-sized WebKit profile (`mobile-safari`). It covers sending and verification, both verification URLs, form validation and message limits, draft restoration and clearing, storage-failure warnings, contact submission, narrow-screen scrolling, public route inventories, and the Apple association and social-preview assets. Route inventories are attached to the HTML report as JSON.
+
+```bash
+npm run test:desktop
+npm run test:mobile
+npm run test:report
+```
+
+WebKit emulation checks the mobile website. The native keyboard toolbar, iOS safe-area spacing, Universal Link app launching, and device-storage behavior still need a signed iPhone build or simulator for verification.
 
 ## Web and API deployment
 
@@ -184,3 +194,34 @@ The in-app privacy statement is on the About page. Review it against the deploye
 I'm Alanna Risse, a web developer and adjunct instructor in the design program at Portland State University in Portland, Oregon. Send a Boop began as a UX/UI teaching concept and became a working Expo/React Native app, built with help from Claude Code and Codex.
 
 Learn more at [alannarisse.com](https://alannarisse.com).
+
+
+
+## Future Features:
+- Localization for Korean, Spanish, French, Japanese
+- Adding bunnies!
+- Add ability for submissions
+- install expo-dev-client and adding a development profile to eas.json.
+- Google Play Store
+
+## Saved form drafts
+
+The main boop form and contact form automatically save separate drafts on the
+current device. Names, email addresses, messages, and the selected animal are
+restored when you navigate back or restart the app. Cancel leaves the contact
+draft available for later. A successful send clears only that form's draft;
+validation errors and failed requests keep it. For a boop, successful submission
+means the verification email was requested; the sender still needs to verify it.
+
+Drafts use AsyncStorage on mobile and local browser storage on web. They are not
+synced between devices. If local storage fails, the app keeps the draft in memory,
+shows a warning, and asks before navigation that could lose unsaved entries.
+Browser reload/close warnings are enabled when a draft has not been saved. An OS
+force-quit cannot reliably display a warning, so immediate autosaving is the
+primary protection. Clearing app data or browser storage removes saved drafts.
+
+Run the mocked draft regression checks with:
+
+```bash
+npx playwright test e2e/form-drafts.spec.ts e2e/contact.spec.ts
+```

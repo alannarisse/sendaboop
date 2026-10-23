@@ -104,6 +104,14 @@ export function AnimalSelector({ selectedAnimalUid, onSelectAnimal }: AnimalSele
     }
   }, [hasRandomized]);
 
+  // Keep a restored choice visible even when this screen randomizes its grid.
+  const restoredAnimal = animals.find((animal) => animal.uid === selectedAnimalUid);
+  const visibleAnimals = restoredAnimal
+    && (selectedType === null || restoredAnimal.animal === selectedType)
+    && !displayedAnimals.some((animal) => animal.uid === selectedAnimalUid)
+    ? [restoredAnimal, ...displayedAnimals.slice(0, 11)]
+    : displayedAnimals;
+
   // Handle animal type filter change
   const handleTypeChange = (type: string | null) => {
     setSelectedType(type);
@@ -139,7 +147,7 @@ export function AnimalSelector({ selectedAnimalUid, onSelectAnimal }: AnimalSele
 
       {/* Animal grid */}
       <View style={styles.grid}>
-        {displayedAnimals.map((animal) => {
+        {visibleAnimals.map((animal) => {
           const isSelected = selectedAnimalUid === animal.uid;
           return (
             <Pressable
