@@ -1,5 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { router, usePathname } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { colors, fonts, spacing, borderRadius } from '@/lib/theme';
 
@@ -24,7 +25,7 @@ export function Nav() {
   };
 
   return (
-    <View style={styles.navBar}>
+    <SafeAreaView style={styles.navBar} edges={['top', 'left', 'right']}>
       <View style={styles.navContent}>
         <Pressable onPress={() => navigateTo('/')} style={styles.logoButton} testID="home-link">
           <DogLogo size={50} color={colors.primary} />
@@ -42,7 +43,7 @@ export function Nav() {
           </Pressable>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

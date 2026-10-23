@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   Alert,
   Platform,
+  Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
@@ -49,6 +51,18 @@ export default function SendBoopScreen() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios') return;
+
+    const show = Keyboard.addListener('keyboardWillShow', () => setIsKeyboardVisible(true));
+    const hide = Keyboard.addListener('keyboardWillHide', () => setIsKeyboardVisible(false));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
 
   // Pre-fill recipient info if coming from "boop back" link
   useEffect(() => {
@@ -139,55 +153,79 @@ export default function SendBoopScreen() {
     formData.recipientName && formData.recipientEmail;
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Header />
-      <AnimalSelector selectedAnimalUid={selectedAnimal?.uid ?? null} onSelectAnimal={handleSelectAnimal} />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled={Platform.OS === 'ios'}
+    >
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Header />
+        <AnimalSelector selectedAnimalUid={selectedAnimal?.uid ?? null} onSelectAnimal={handleSelectAnimal} />
 
-      <BoopForm
-        formData={formData}
-        errors={errors}
-        onChangeField={handleChangeField}
-      />
+        <BoopForm
+          formData={formData}
+          errors={errors}
+          onChangeField={handleChangeField}
+        />
 
-      {apiError && (
-        <View style={styles.errorContainer}>
-          <Text style={styles.apiError} testID="api-error">{apiError}</Text>
+        {apiError && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.apiError} testID="api-error">{apiError}</Text>
+          </View>
+        )}
+
+        <View style={styles.buttonContainer}>
+          <Tooltip
+            text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
+            visible={!isFormValid && !isLoading}
+          >
+            <Pressable
+              onPress={handleSendBoop}
+              disabled={isLoading || !isFormValid}
+              testID="send-button"
+              style={({ pressed }) => [
+                styles.sendButtonWrapper,
+                pressed && isFormValid && styles.sendButtonPressed,
+              ]}
+            >
+              <LinearGradient
+                colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
+                start={gradients.buttonPrimary.start}
+                end={gradients.buttonPrimary.end}
+                style={styles.sendButton}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color={colors.white} />
+                ) : (
+                  <View style={styles.sendButtonContent}>
+                    <PaperPlaneIcon />
+                    <Text style={styles.sendButtonText}>Send Boop</Text>
+                  </View>
+                )}
+              </LinearGradient>
+            </Pressable>
+          </Tooltip>
+        </View>
+      </ScrollView>
+      {isKeyboardVisible && (
+        <View style={styles.keyboardToolbar}>
+          <Pressable
+            onPress={Keyboard.dismiss}
+            accessibilityRole="button"
+            accessibilityLabel="Dismiss keyboard"
+            testID="dismiss-keyboard-button"
+            style={styles.keyboardDoneButton}
+          >
+            <Text style={styles.keyboardDoneText}>Done</Text>
+          </Pressable>
         </View>
       )}
-
-      <View style={styles.buttonContainer}>
-        <Tooltip
-          text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
-          visible={!isFormValid && !isLoading}
-        >
-          <Pressable
-            onPress={handleSendBoop}
-            disabled={isLoading || !isFormValid}
-            testID="send-button"
-            style={({ pressed }) => [
-              styles.sendButtonWrapper,
-              pressed && isFormValid && styles.sendButtonPressed,
-            ]}
-          >
-            <LinearGradient
-              colors={isFormValid ? gradients.buttonPrimary.colors : gradients.buttonDisabled.colors}
-              start={gradients.buttonPrimary.start}
-              end={gradients.buttonPrimary.end}
-              style={styles.sendButton}
-            >
-              {isLoading ? (
-                <ActivityIndicator color={colors.white} />
-              ) : (
-                <View style={styles.sendButtonContent}>
-                  <PaperPlaneIcon />
-                  <Text style={styles.sendButtonText}>Send Boop</Text>
-                </View>
-              )}
-            </LinearGradient>
-          </Pressable>
-        </Tooltip>
-      </View>
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -198,6 +236,24 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingBottom: spacing['9xl'],
+  },
+  keyboardToolbar: {
+    backgroundColor: colors.background.card,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border.light,
+    alignItems: 'flex-end',
+    paddingHorizontal: spacing.xl,
+  },
+  keyboardDoneButton: {
+    minWidth: 64,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  keyboardDoneText: {
+    fontFamily: fonts.family.sansBold,
+    fontSize: fonts.size.lg,
+    color: colors.text.dark,
   },
   errorContainer: {
     marginHorizontal: spacing['3xl'],

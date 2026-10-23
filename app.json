@@ -2,6 +2,7 @@
   "expo": {
     "name": "Send a Boop",
     "slug": "sendaboop",
+    "owner": "alannarisse",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +16,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sendaboop.app"
+      "bundleIdentifier": "com.sendaboop.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -35,6 +39,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1c76d171-aff0-4a66-bfdf-4350394f661d"
+      }
     }
   }
 }

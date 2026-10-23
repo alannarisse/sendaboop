@@ -18,3 +18,13 @@ The Resend API only temporarily saved the email addresses it received in order t
 
 ## To start local sever
 npx expo start
+
+
+## Upload to apple store connect
+npx eas-cli submit --platform ios --profile production
+
+## running test flight builds
+npx eas-cli build --platform ios --profile production
+
+## Once it succeeds, submit it:
+npx eas-cli submit --platform ios --profile production
