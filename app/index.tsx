@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { useState, useCallback, useEffect } from 'react';
 import {
   View,
@@ -36,6 +37,7 @@ function isValidEmail(email: string): boolean {
 }
 
 export default function SendBoopScreen() {
+  const { t, language } = useLocalization();
   // Check for pre-filled recipient from "boop back" link
   const { to, toName } = useLocalSearchParams<{ to?: string; toName?: string }>();
 
@@ -112,6 +114,7 @@ export default function SendBoopScreen() {
       const response = await sendBoop({
         animal: selectedAnimal,
         ...formData,
+        locale: language,
       });
 
       if (!response.success) throw new Error(response.error || 'Failed to send boop');
@@ -130,17 +133,17 @@ export default function SendBoopScreen() {
       const message = error instanceof Error ? error.message : 'Failed to send boop';
       setApiError(message);
       if (Platform.OS !== 'web') {
-        Alert.alert('Oops!', message);
+        Alert.alert(t('Oops!'), t(message));
       }
     } finally {
       setIsLoading(false);
     }
-  }, [selectedAnimal, formData, validateForm, clear]);
+  }, [selectedAnimal, formData, validateForm, clear, language, t]);
 
   const isFormValid = selectedAnimal && formData.senderName && formData.senderEmail &&
     formData.recipientName && formData.recipientEmail;
 
-  if (!ready) return <ActivityIndicator accessibilityLabel="Restoring your draft" />;
+  if (!ready) return <ActivityIndicator accessibilityLabel={t("Restoring your draft")} />;
 
   return (
     <KeyboardForm style={styles.container} contentContainerStyle={styles.content}>
@@ -156,13 +159,13 @@ export default function SendBoopScreen() {
 
       {apiError && (
         <View style={styles.errorContainer}>
-          <Text style={styles.apiError} testID="api-error">{apiError}</Text>
+          <Text style={styles.apiError} testID="api-error">{t(apiError)}</Text>
         </View>
       )}
 
       <View style={styles.buttonContainer}>
         <Tooltip
-          text="There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable."
+          text={t("There's some missing info. Make sure you've selected an animal and filled out the name and email fields. Once the form is filled out correctly, this button will be clickable.")}
           visible={!isFormValid && !isLoading}
         >
           <Pressable
@@ -185,7 +188,7 @@ export default function SendBoopScreen() {
               ) : (
                 <View style={styles.sendButtonContent}>
                   <PaperPlaneIcon />
-                  <Text style={styles.sendButtonText}>Send Boop</Text>
+                  <Text style={styles.sendButtonText}>{t("Send Boop")}</Text>
                 </View>
               )}
             </LinearGradient>

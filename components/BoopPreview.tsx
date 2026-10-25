@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { Animal } from '@/lib/animals';
 
@@ -9,23 +10,22 @@ interface BoopPreviewProps {
 }
 
 export function BoopPreview({ animal, message, senderName, recipientName }: BoopPreviewProps) {
+  const { t } = useLocalization();
   return (
     <View style={styles.container} testID="boop-preview">
-      <Text style={styles.title}>Preview:</Text>
+      <Text style={styles.title}>{t("Preview:")}</Text>
       <View style={styles.card}>
         <Image source={animal.image} style={styles.image} />
         <View style={styles.content}>
-          <Text style={styles.greeting}>
-            Hey {recipientName || 'friend'}! 👋
+          <Text style={styles.greeting}>{t('Hello, {name}! 👋', { name: recipientName || t('friend') })}
           </Text>
           {message ? (
-            <Text style={styles.message}>"{message}"</Text>
+            <Text style={styles.message}>{'"'}{message}{'"'}</Text>
           ) : (
-            <Text style={styles.messagePlaceholder}>Your message will appear here...</Text>
+            <Text style={styles.messagePlaceholder}>{t("Your message will appear here...")}</Text>
           )}
           <Text style={styles.signature}>
-            — {senderName || 'Someone'} sent you a boop!
-          </Text>
+            — {t('{name} sent you a boop!', { name: senderName || t('Someone') })}</Text>
         </View>
       </View>
     </View>

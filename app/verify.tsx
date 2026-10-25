@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -26,6 +27,7 @@ function ErrorIcon({ size = 56, color = colors.primary }: { size?: number; color
 }
 
 export default function VerifyScreen() {
+  const { t } = useLocalization();
   const { token } = useLocalSearchParams<{ token: string }>();
   const [state, setState] = useState<VerifyState>('loading');
   const [result, setResult] = useState<VerifyBoopResponse | null>(null);
@@ -70,7 +72,7 @@ export default function VerifyScreen() {
       {state === 'loading' && (
         <View style={styles.content} testID="verify-loading">
           <ActivityIndicator size="large" color={colors.primary} />
-          <Text style={styles.loadingText}>Verifying your boop...</Text>
+          <Text style={styles.loadingText}>{t("Verifying your boop...")}</Text>
         </View>
       )}
 
@@ -79,11 +81,11 @@ export default function VerifyScreen() {
           <View style={styles.iconWrapper}>
             <HeartIcon size={56} color={colors.primary} />
           </View>
-          <Text style={styles.title}>Boop Sent!</Text>
+          <Text style={styles.title}>{t("Boop Sent!")}</Text>
           <Text style={styles.subtitle}>
             {result?.recipientName
-              ? `${result.recipientName} is going to love this!`
-              : 'Your boop is on its way!'}
+              ? t('{name} is going to love this!', { name: result.recipientName })
+              : t('Your boop is on its way!')}
           </Text>
 
           {animal && (
@@ -92,10 +94,7 @@ export default function VerifyScreen() {
             </View>
           )}
 
-          <Text style={styles.description}>
-            We've sent a cute photo to brighten their day. They'll receive an email with your
-            message and this adorable pic!
-          </Text>
+          <Text style={styles.description}>{t("We've sent a cute photo to brighten their day. They'll receive an email with your message and this adorable pic!")}</Text>
 
           <Pressable
             onPress={() => router.replace('/')}
@@ -107,7 +106,7 @@ export default function VerifyScreen() {
               end={gradients.buttonPrimary.end}
               style={styles.button}
             >
-              <Text style={styles.buttonText}>Send Another Boop</Text>
+              <Text style={styles.buttonText}>{t("Send Another Boop")}</Text>
             </LinearGradient>
           </Pressable>
         </View>
@@ -118,8 +117,8 @@ export default function VerifyScreen() {
           <View style={styles.iconWrapper}>
             <ErrorIcon size={56} color={colors.primary} />
           </View>
-          <Text style={styles.title}>Oops!</Text>
-          <Text style={styles.errorMessage}>{getErrorMessage(result?.error)}</Text>
+          <Text style={styles.title}>{t("Oops!")}</Text>
+          <Text style={styles.errorMessage}>{t(getErrorMessage(result?.error))}</Text>
 
           <Pressable
             onPress={() => router.replace('/')}
@@ -132,7 +131,7 @@ export default function VerifyScreen() {
               style={styles.button}
             >
               <Text style={styles.buttonText}>
-                {result?.error === 'Token already used' ? 'Send Another Boop' : 'Try Again'}
+                {t(result?.error === 'Token already used' ? 'Send Another Boop' : 'Try Again')}
               </Text>
             </LinearGradient>
           </Pressable>

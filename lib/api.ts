@@ -10,6 +10,7 @@ export interface SendBoopRequest {
   recipientName: string;
   recipientEmail: string;
   message: string;
+  locale?: 'en' | 'ko';
 }
 
 export interface SendBoopResponse {
@@ -42,6 +43,7 @@ export async function sendBoop(data: SendBoopRequest): Promise<SendBoopResponse>
     recipientEmail: data.recipientEmail,
     message: data.message,
     clientPlatform: Platform.OS,
+    locale: data.locale || 'en',
   };
 
   const response = await fetch(`${API_URL}/api/send-boop`, {

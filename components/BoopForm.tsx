@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { colors, fonts, spacing, borderRadius, shadows, commonStyles } from '@/lib/theme';
 
@@ -32,18 +33,19 @@ function RequiredLabel({ text }: { text: string }) {
 }
 
 export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
+  const { t } = useLocalization();
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.disclaimer}>Emails are used to deliver your boop. Unsent drafts stay on this device.</Text>
-        <Text style={styles.sectionLabel}>FROM YOU</Text>
+        <Text style={styles.disclaimer}>{t("Emails are used to deliver your boop. Unsent drafts stay on this device.")}</Text>
+        <Text style={styles.sectionLabel}>{t("FROM YOU")}</Text>
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Your name" />
+          <RequiredLabel text={t("Your name")} />
           <TextInput
             style={[styles.input, errors.senderName && styles.inputError]}
             value={formData.senderName}
             onChangeText={(text) => onChangeField('senderName', text)}
-            placeholder="Enter your name"
+            placeholder={t("Enter your name")}
             placeholderTextColor={colors.text.placeholder}
             testID="sender-name-input"
             autoCapitalize="words"
@@ -52,11 +54,11 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         </View>
         {errors.senderName && (
           <Text style={styles.errorText} testID="sender-name-error">
-            {errors.senderName}
+            {t(errors.senderName)}
           </Text>
         )}
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Your email" />
+          <RequiredLabel text={t("Your email")} />
           <TextInput
             style={[styles.input, errors.senderEmail && styles.inputError]}
             value={formData.senderEmail}
@@ -71,20 +73,20 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         </View>
         {errors.senderEmail && (
           <Text style={styles.errorText} testID="sender-email-error">
-            {errors.senderEmail}
+            {t(errors.senderEmail)}
           </Text>
         )}
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.sectionLabel}>TO YOUR FRIEND</Text>
+        <Text style={styles.sectionLabel}>{t("TO YOUR FRIEND")}</Text>
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Friend's name" />
+          <RequiredLabel text={t("Friend's name")} />
           <TextInput
             style={[styles.input, errors.recipientName && styles.inputError]}
             value={formData.recipientName}
             onChangeText={(text) => onChangeField('recipientName', text)}
-            placeholder="Enter their name"
+            placeholder={t("Enter their name")}
             placeholderTextColor={colors.text.placeholder}
             testID="recipient-name-input"
             autoCapitalize="words"
@@ -93,11 +95,11 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         </View>
         {errors.recipientName && (
           <Text style={styles.errorText} testID="recipient-name-error">
-            {errors.recipientName}
+            {t(errors.recipientName)}
           </Text>
         )}
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Friend's email" />
+          <RequiredLabel text={t("Friend's email")} />
           <TextInput
             style={[styles.input, errors.recipientEmail && styles.inputError]}
             value={formData.recipientEmail}
@@ -112,20 +114,20 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         </View>
         {errors.recipientEmail && (
           <Text style={styles.errorText} testID="recipient-email-error">
-            {errors.recipientEmail}
+            {t(errors.recipientEmail)}
           </Text>
         )}
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
+        <Text style={styles.sectionLabel}>{t("YOUR MESSAGE")}</Text>
         <View style={styles.inputWrapper}>
-          <Text style={styles.fieldLabel}>Message (optional)</Text>
+          <Text style={styles.fieldLabel}>{t("Message (optional)")}</Text>
           <TextInput
             style={[styles.input, styles.messageInput, errors.message && styles.inputError]}
             value={formData.message}
             onChangeText={(text) => onChangeField('message', text)}
-            placeholder="Write something nice..."
+            placeholder={t("Write something nice...")}
             placeholderTextColor={colors.text.placeholder}
             testID="message-input"
             multiline
@@ -135,7 +137,7 @@ export function BoopForm({ formData, errors, onChangeField }: BoopFormProps) {
         </View>
         {errors.message && (
           <Text style={styles.errorText} testID="message-error">
-            {errors.message}
+            {t(errors.message)}
           </Text>
         )}
       </View>

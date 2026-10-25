@@ -1,3 +1,4 @@
+import { useLocalization } from './localization';
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type PropsWithChildren } from 'react';
 import { Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,6 +43,7 @@ function parseDrafts(raw: string): Drafts {
 }
 
 export function DraftsProvider({ children }: PropsWithChildren) {
+  const { t } = useLocalization();
   const [drafts, setDrafts] = useState(emptyDrafts);
   const [ready, setReady] = useState(false);
   const [atRisk, setAtRisk] = useState(false);
@@ -106,14 +108,14 @@ export function DraftsProvider({ children }: PropsWithChildren) {
     await queue.current;
     if (saved.current || !hasContent(current.current)) return true;
     const message = 'Your draft could not be saved on this device. Leaving may cause you to lose what you entered. Leave anyway?';
-    if (Platform.OS === 'web') return window.confirm(message);
+    if (Platform.OS === 'web') return window.confirm(t(message));
     return new Promise<boolean>((resolve) => {
-      Alert.alert('Unsaved form data', message, [
-        { text: 'Stay', style: 'cancel', onPress: () => resolve(false) },
-        { text: 'Leave', style: 'destructive', onPress: () => resolve(true) },
+      Alert.alert(t('Unsaved form data'), t(message), [
+        { text: t('Stay'), style: 'cancel', onPress: () => resolve(false) },
+        { text: t('Leave'), style: 'destructive', onPress: () => resolve(true) },
       ], { cancelable: true, onDismiss: () => resolve(false) });
     });
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (Platform.OS !== 'web' || !atRisk || !hasContent(drafts)) return;

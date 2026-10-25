@@ -17,7 +17,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sendaboop.app",
-      "associatedDomains": ["applinks:sendaboop.app"],
+      "associatedDomains": [
+        "applinks:sendaboop.app"
+      ],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -36,7 +38,22 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": [
+              "en",
+              "ko"
+            ],
+            "android": [
+              "en",
+              "ko"
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

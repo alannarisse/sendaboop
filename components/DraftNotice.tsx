@@ -1,12 +1,14 @@
+import { useLocalization } from '@/lib/localization';
 import { Text, StyleSheet } from 'react-native';
 import { useDrafts } from '@/lib/form-drafts';
 import { colors, fonts, spacing } from '@/lib/theme';
 
-export function DraftNotice({ sent = false }: { sent?: boolean }) {
-  const { warning, atRisk } = useDrafts();
-  if (sent && !warning) return null;
-  return <Text accessibilityRole={warning ? 'alert' : undefined} style={styles.notice}>
-    {warning || (atRisk ? 'Saving your draft…' : 'Your unsent draft is saved on this device until your message is sent.')}
+export function DraftNotice() {
+  const { t } = useLocalization();
+  const { warning } = useDrafts();
+  if (!warning) return null;
+  return <Text accessibilityRole="alert" style={styles.notice}>
+    {t(warning)}
   </Text>;
 }
 const styles = StyleSheet.create({

@@ -5,6 +5,8 @@ import { SignJWT, jwtVerify } from 'jose';
 import { Resend } from 'resend';
 import { randomUUID } from 'crypto';
 import 'dotenv/config';
+import { createVerificationEmail, createRecipientEmail, createSenderEmail } from './email-templates.js';
+import { emailText, normalizeEmailLanguage } from './email-localization.js';
 import { createVerificationUrl } from './verification-links.js';
 
 const app = express();
@@ -53,6 +55,7 @@ interface Animal {
 }
 
 interface SendBoopRequest {
+  locale?: string;
   clientPlatform?: string;
   animal: Animal;
   senderName: string;
@@ -63,6 +66,7 @@ interface SendBoopRequest {
 }
 
 interface PendingBoopPayload {
+  locale?: string;
   animal: Animal;
   senderName: string;
   senderEmail: string;
@@ -77,6 +81,7 @@ async function createVerificationToken(data: SendBoopRequest): Promise<string> {
   const tokenId = randomUUID();
 
   return new SignJWT({
+    locale: normalizeEmailLanguage(data.locale),
     animal: data.animal,
     senderName: data.senderName,
     senderEmail: data.senderEmail,
@@ -111,204 +116,6 @@ async function verifyToken(token: string): Promise<{ valid: true; payload: Pendi
   }
 }
 
-// Email templates
-function createVerificationEmail(data: SendBoopRequest, verificationUrl: string): string {
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Your Boop</title>
-</head>
-<body style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-          <tr>
-            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #666666; font-size: 28px;">🐈‍⬛ Verify Your Boop 🐾</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 24px; text-align: center;">
-              <p style="font-size: 18px; color: #666666; margin: 0 0 20px;">
-                Hey ${data.senderName}!
-              </p>
-              <p style="font-size: 16px; color: #666666; margin: 0 0 20px;">
-                There's one more important step! Click the button below to send this adorable pup to <strong>${data.recipientName}</strong>:
-              </p>
-              <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
-              ${data.message ? `
-              <div style="background-color: #f8f0f0; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-                <p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Your message:</p>
-                <p style="font-size: 16px; color: #4b5563; margin: 0; font-style: italic;">
-                  "${data.message}"
-                </p>
-              </div>
-              ` : ''}
-              <div style="margin: 24px 0;">
-                <a href="${verificationUrl}" style="display: inline-block; background: linear-gradient(315deg, #f87171 3%, #f69a9a 44%, #f85555 85%); color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">
-                  Send This Boop!
-                </a>
-              </div>
-              <p style="font-size: 14px; color: #9ca3af; margin: 0;">
-                This link expires in 24 hours.
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Didn't request this? You can safely ignore this email.
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-`;
-}
-
-function createRecipientEmail(data: SendBoopRequest | PendingBoopPayload): string {
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You got a Boop!</title>
-</head>
-<body style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%" style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-          <tr>
-            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">You got a Boop! 🐾</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 24px; text-align: center;">
-              <p style="font-size: 18px; color: #4b5563; margin: 0 0 20px;">
-                Hey ${data.recipientName}! 👋
-              </p>
-              <img src="${data.animal.url}" alt="${data.animal.alt}" style="width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 20px;">
-              ${data.message ? `
-              <div style="background-color: #f8f0f0; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-                <p style="font-size: 16px; color: #4b5563; margin: 0; font-style: italic;">
-                  "${data.message}"
-                </p>
-              </div>
-              ` : ''}
-              <p style="font-size: 16px; color: #f87171; margin: 0 0 8px; font-weight: 600;">
-                — ${data.senderName} sent you this boop!
-              </p>
-              <p style="font-size: 13px; color: #9ca3af; margin: 0 0 24px;">
-                from ${data.senderEmail}
-              </p>
-              <a href="https://sendaboop.app/?to=${encodeURIComponent(data.senderEmail)}&toName=${encodeURIComponent(data.senderName)}" style="display: inline-block; background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; margin-bottom: 12px;">
-                Send ${data.senderName} a Boop Back? 🐾
-              </a>
-              <br>
-              <a href="https://sendaboop.app" style="display: inline-block; color: #f87171; padding: 8px 16px; text-decoration: none; font-size: 13px; margin-top: 8px;">
-                or send a boop to someone else →
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td style="background-color: #f8f0f0; padding: 16px; text-align: center;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0 0 8px;">
-                Sent with love via Send a Boop 🐕
-              </p>
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Appreciate this app? <a href="https://sendaboop.app/contact" style="color: #f87171;">Leave me a message!</a>
-              </p>
-              <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
-                © Alanna Risse 2026
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-`;
-}
-
-function createSenderEmail(data: SendBoopRequest | PendingBoopPayload): string {
-  return `
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Boop was sent!</title>
-</head>
-
-<body
-  style="margin: 0; padding: 0; background-color: #fff5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="100%"
-          style="max-width: 500px; background-color: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-          <tr>
-            <td style="background-color: #ffb4ac; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; color: #1f2937; font-size: 28px;">Boop Sent! 🎈</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 24px; text-align: center;">
-              <p style="font-size: 18px; color: #4b5563; margin: 0 0 20px;">
-                Hey ${data.senderName}!
-              </p>
-              <p style="font-size: 16px; color: #4b5563; margin: 0 0 20px;">
-                Your boop to <strong>${data.recipientName}</strong> has been sent successfully!
-              </p>
-              <img src="${data.animal.url}" alt="${data.animal.alt}"
-                style="width: 100%; max-width: 200px; border-radius: 12px; margin-bottom: 20px;">
-              <p style="font-size: 14px; color: #6b7280; margin: 0 0 20px;">
-                They'll receive a cute photo in their inbox. You're making someone's day brighter!
-              </p>
-              <a href="https://sendaboop.app"
-                style="display: inline-block; background-color: #f87171; background: linear-gradient(315deg, rgba(248, 113, 113) 3%, rgb(246, 154, 154) 44%, rgb(248, 85, 85) 85%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">
-                Send Another Boop 🐶
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td style="background-color: #f9fafb; padding: 16px; text-align: center;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0 0 8px;">
-                Sent with love via Send a Boop 🐕
-              </p>
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">
-                Appreciate this app? <a href="https://ko-fi.com/alannarisse" style="color: #f87171;">Please leave me a
-                  tip at Ko-fi!</a>
-              </p>
-              <p style="font-size: 11px; color: #9ca3af; margin: 8px 0 0;">
-                © Alanna Risse 2026
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-
-</html>
-`;
-}
-
 // Routes
 
 // Step 1: User submits form - send verification email to sender
@@ -329,13 +136,13 @@ app.post('/api/send-boop', sendBoopLimiter, async (req, res) => {
 
     // Create verification token
     const token = await createVerificationToken(data);
-    const verificationUrl = createVerificationUrl(APP_URL, token, data.clientPlatform);
+    const verificationUrl = createVerificationUrl(APP_URL, token, data.clientPlatform, data.locale);
 
     // Send verification email to sender
     const result = await resend.emails.send({
       from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.senderEmail,
-      subject: `Verify your boop to ${data.recipientName}`,
+      subject: emailText(data.locale, 'Verify your boop to {name}', { name: data.recipientName }),
       html: createVerificationEmail(data, verificationUrl),
     });
 
@@ -381,7 +188,7 @@ app.get('/api/verify-boop/:token', verifyBoopLimiter, async (req, res) => {
       from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.recipientEmail,
       replyTo: data.senderEmail,
-      subject: `${data.senderName} sent you a Boop! 🐾`,
+      subject: emailText(data.locale, '{name} sent you a Boop! 🐾', { name: data.senderName }),
       html: createRecipientEmail(data),
     });
 
@@ -396,7 +203,7 @@ app.get('/api/verify-boop/:token', verifyBoopLimiter, async (req, res) => {
     const senderResult = await resend.emails.send({
       from: 'Send a Boop <sendaboopmain@sendaboop.app>',
       to: data.senderEmail,
-      subject: `Your Boop to ${data.recipientName} was sent! 🎉`,
+      subject: emailText(data.locale, 'Your Boop to {name} was sent! 🎉', { name: data.recipientName }),
       html: createSenderEmail(data),
     });
 

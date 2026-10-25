@@ -225,3 +225,53 @@ Run the mocked draft regression checks with:
 ```bash
 npx playwright test e2e/form-drafts.spec.ts e2e/contact.spec.ts
 ```
+
+
+## English and Korean
+
+The app supports English (`en`) and Korean (`ko`) on mobile and web. On first
+use it follows the device/browser language, with English as the fallback. The
+language button in the navigation switches between **한국어** and **English**
+and saves the choice on the device. Explicit choices take precedence over later
+device-language changes. Switching languages keeps existing form drafts intact.
+
+Labels, help text, validation errors, draft warnings, About/privacy copy,
+verification screens, and the native keyboard toolbar are translated. Names,
+email addresses, personal messages, URLs, and photographer credits are preserved.
+The UI uses the existing fonts with system Hangul fallback; check Korean line
+wrapping on real devices before release.
+
+The selected language is included when requesting a boop and signed into its
+verification token. Verification, recipient, and sender-confirmation emails use
+that language. A sender chooses the language for the whole boop; the app does
+not infer the recipient's language or translate the sender's personal message.
+Older tokens and requests default to English. Contact emails sent to the app
+owner retain their English internal template. Korean email links include a
+`lang=ko` hint for browser fallback; an existing saved language preference still
+wins over that hint.
+
+Translation sources:
+
+- `lib/ko.ts`: Korean UI copy, keyed by the existing English source text.
+- `lib/translations.ts`: English fallback and named-value interpolation.
+- `lib/localization.tsx`: device detection, saved preference, and language context.
+- `server/email-localization.ts`: fixed system-email copy and subjects.
+- `server/email-templates.ts`: email layout, with personal content kept separate.
+
+```bash
+npm run test:localization
+npm run test:unit
+```
+
+To release localization, deploy the Railway API and Vercel website, then create
+and install a new TestFlight build. The Expo Localization native module and
+supported-language declarations require a new binary. Review the Korean copy
+with a fluent Korean speaker, especially privacy text, before publishing.
+
+App Store Connect localization is separate: add Korean descriptions, subtitle,
+keywords, release notes, and screenshots there. Those assets are not uploaded
+by changing the app's translation files. If the app gains dates, currencies,
+counts, or plural messages, use locale-aware formatting and plural rules rather
+than building those sentences with string concatenation.
+
+Reference: https://docs.expo.dev/guides/localization/

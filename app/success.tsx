@@ -1,10 +1,11 @@
+import { useLocalization } from '@/lib/localization';
 import { View, Text, Image, Pressable, StyleSheet, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { router, useLocalSearchParams } from 'expo-router';
 import { getAnimalByUid } from '@/lib/animals';
 import { DraftNotice } from '@/components/DraftNotice';
-import { colors, fonts, spacing, borderRadius, shadows, gradients, commonStyles } from '@/lib/theme';
+import { colors, fonts, spacing, borderRadius, shadows, gradients } from '@/lib/theme';
 
 function HeartIcon({ size = 48, color = colors.primary }: { size?: number; color?: string }) {
   return (
@@ -23,6 +24,7 @@ function EmailIcon({ size = 56, color = colors.primary }: { size?: number; color
 }
 
 export default function SuccessScreen() {
+  const { t } = useLocalization();
   const { recipientName, animalUid, pending, senderEmail } = useLocalSearchParams<{
     recipientName: string;
     animalUid: string;
@@ -45,10 +47,9 @@ export default function SuccessScreen() {
           <View style={styles.heartWrapper}>
             <EmailIcon size={56} color={colors.primary} />
           </View>
-          <Text style={styles.title}>Check Your Email!</Text>
-          <DraftNotice sent />
-          <Text style={styles.subtitle}>
-            We've sent a verification email to{'\n'}
+          <Text style={styles.title}>{t("Check Your Email!")}</Text>
+          <DraftNotice />
+          <Text style={styles.subtitle}>{t("We've sent a verification email to")}{'\n'}
             <Text style={styles.emailHighlight}>{senderEmail}</Text>
           </Text>
 
@@ -58,10 +59,7 @@ export default function SuccessScreen() {
             </View>
           )}
 
-          <Text style={styles.description}>
-            Click the link in the email to send your boop to {recipientName}.
-            The link expires in 24 hours.
-          </Text>
+          <Text style={styles.description}>{t("Click the link in the email to send your boop to {name}. The link expires in 24 hours.", { name: recipientName || "" })}</Text>
 
           <Pressable
             onPress={handleSendAnother}
@@ -77,12 +75,12 @@ export default function SuccessScreen() {
               end={gradients.buttonPrimaryAlt.end}
               style={styles.button}
             >
-              <Text style={styles.buttonText}>Send Another Boop</Text>
+              <Text style={styles.buttonText}>{t("Send Another Boop")}</Text>
             </LinearGradient>
           </Pressable>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Made with love by Alanna Risse</Text>
+            <Text style={styles.footerText}>{t("Made with love by Alanna Risse")}</Text>
           </View>
         </View>
       </View>
@@ -96,10 +94,10 @@ export default function SuccessScreen() {
         <View style={styles.heartWrapper}>
           <HeartIcon size={56} color={colors.primary} />
         </View>
-        <Text style={styles.title}>Boop Sent!</Text>
-        <DraftNotice sent />
+        <Text style={styles.title}>{t("Boop Sent!")}</Text>
+        <DraftNotice />
         <Text style={styles.subtitle}>
-          {recipientName ? `${recipientName} is going to love this!` : 'Your boop is on its way!'}
+          {recipientName ? t('{name} is going to love this!', { name: recipientName }) : t('Your boop is on its way!')}
         </Text>
 
         {animal && (
@@ -108,10 +106,7 @@ export default function SuccessScreen() {
           </View>
         )}
 
-        <Text style={styles.description}>
-          We've sent a cute photo to brighten their day. They'll receive an email with your
-          message and this adorable pic!
-        </Text>
+        <Text style={styles.description}>{t("We've sent a cute photo to brighten their day. They'll receive an email with your message and this adorable pic!")}</Text>
 
         <Pressable
           onPress={handleSendAnother}
@@ -127,20 +122,17 @@ export default function SuccessScreen() {
             end={gradients.buttonPrimaryAlt.end}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Send Another Boop</Text>
+            <Text style={styles.buttonText}>{t("Send Another Boop")}</Text>
           </LinearGradient>
         </Pressable>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Made with love by Alanna Risse</Text>
-          <Text style={styles.footerText}>
-            Appreciate this app?{' '}
+          <Text style={styles.footerText}>{t("Made with love by Alanna Risse")}</Text>
+          <Text style={styles.footerText}>{t("Appreciate this app?")}{' '}
             <Text
               style={styles.footerLink}
               onPress={() => Linking.openURL('https://ko-fi.com/alannarisse')}
-            >
-              Leave a tip at Ko-fi!
-            </Text>
+            >{t("Leave a tip at Ko-fi!")}</Text>
           </Text>
           <Pressable
             onPress={() => Linking.openURL('https://ko-fi.com/alannarisse')}

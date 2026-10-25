@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { View, Text, StyleSheet } from 'react-native';
 import { usePathname } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
@@ -12,6 +13,7 @@ function HeartIcon({ size = 44, color = colors.primary }: { size?: number; color
 }
 
 export function Header() {
+  const { t } = useLocalization();
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
@@ -24,8 +26,8 @@ export function Header() {
       <View style={styles.heartWrapper}>
         <HeartIcon size={44} color={colors.primary} />
       </View>
-      <Text style={styles.heroTitle}>Send A Boop!</Text>
-      <Text style={styles.heroSubtitle}>Pick your favorite furball to brighten someone's day</Text>
+      <Text style={styles.heroTitle}>{t("Send A Boop!")}</Text>
+      <Text style={styles.heroSubtitle}>{t("Pick your favorite furball to brighten someone's day")}</Text>
     </View>
   );
 }

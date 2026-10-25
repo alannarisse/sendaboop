@@ -1,9 +1,10 @@
+import { useLocalization } from '@/lib/localization';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { router, usePathname } from 'expo-router';
 import { useDrafts } from '@/lib/form-drafts';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
-import { colors, fonts, spacing, borderRadius } from '@/lib/theme';
+import { colors, fonts, spacing } from '@/lib/theme';
 
 function DogLogo({ size = 60, color = colors.primary }: { size?: number; color?: string }) {
   return (
@@ -17,6 +18,7 @@ function DogLogo({ size = 60, color = colors.primary }: { size?: number; color?:
 }
 
 export function Nav() {
+  const { t, language, setLanguage, preferenceWarning } = useLocalization();
   const pathname = usePathname();
   const { confirmLeave } = useDrafts();
 
@@ -33,18 +35,28 @@ export function Nav() {
           <DogLogo size={50} color={colors.primary} />
         </Pressable>
         <View style={styles.navLinks}>
+          <Pressable
+            onPress={() => setLanguage(language === 'en' ? 'ko' : 'en')}
+            accessibilityRole="button"
+            accessibilityLabel={t(language === 'en' ? 'Switch to Korean' : 'Switch to English')}
+            testID="language-toggle"
+            style={styles.navItem}
+          >
+            <Text style={styles.navText}>{language === 'en' ? '한국어' : 'English'}</Text>
+          </Pressable>
           <Pressable onPress={() => navigateTo('/about')} style={styles.navItem}>
-            <Text style={[styles.navText, pathname === '/about' && styles.navTextActive]}>
-              About
-            </Text>
+            <Text style={[styles.navText, pathname === '/about' && styles.navTextActive]}>{t("About")}</Text>
           </Pressable>
           <Pressable onPress={() => navigateTo('/contact')} style={styles.navItem}>
-            <Text style={[styles.navText, pathname === '/contact' && styles.navTextActive]}>
-              Contact
-            </Text>
+            <Text style={[styles.navText, pathname === '/contact' && styles.navTextActive]}>{t("Contact")}</Text>
           </Pressable>
         </View>
       </View>
+      {preferenceWarning && (
+        <Text accessibilityRole="alert" style={styles.navText}>
+          {t('Your language preference could not be saved. It will apply while this app is open.')}
+        </Text>
+      )}
     </SafeAreaView>
   );
 }
@@ -67,6 +79,8 @@ const styles = StyleSheet.create({
   },
   navLinks: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    flexShrink: 1,
     alignItems: 'center',
     gap: spacing['3xl'],
   },

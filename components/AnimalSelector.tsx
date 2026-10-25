@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { useState, useRef, useEffect } from 'react';
 import { View, Image, Pressable, StyleSheet, Animated, Text, Platform } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
@@ -90,6 +91,7 @@ interface AnimalSelectorProps {
 }
 
 export function AnimalSelector({ selectedAnimalUid, onSelectAnimal }: AnimalSelectorProps) {
+  const { t } = useLocalization();
   const animalTypes = getAnimalTypes();
   const [selectedType, setSelectedType] = useState<string | null>(null);
   // Start with fixed animals for SSR, then randomize on client
@@ -131,14 +133,14 @@ export function AnimalSelector({ selectedAnimalUid, onSelectAnimal }: AnimalSele
       {/* Animal type filter radio buttons */}
       <View style={styles.filterContainer}>
         <RadioButton
-          label="All"
+          label={t("All")}
           selected={selectedType === null}
           onPress={() => handleTypeChange(null)}
         />
         {animalTypes.map((type) => (
           <RadioButton
             key={type}
-            label={type.charAt(0).toUpperCase() + type.slice(1)}
+            label={t(type.charAt(0).toUpperCase() + type.slice(1))}
             selected={selectedType === type}
             onPress={() => handleTypeChange(type)}
           />
@@ -158,14 +160,14 @@ export function AnimalSelector({ selectedAnimalUid, onSelectAnimal }: AnimalSele
               ]}
               onPress={() => onSelectAnimal(animal)}
               testID={`animal-${animal.uid}`}
-              accessibilityLabel={animal.alt}
+              accessibilityLabel={`${t('{animal} photo', { animal: t(animal.animal) })}. ${t('Photo credit: {credit}', { credit: animal.alt.replace(/^photographer: /, '').split(' - ')[0] })}`}
               accessibilityRole="button"
               accessibilityState={{ selected: isSelected }}
             >
               <Image
                 source={animal.image}
                 style={styles.image}
-                accessibilityLabel={animal.alt}
+                accessibilityLabel={`${t('{animal} photo', { animal: t(animal.animal) })}. ${t('Photo credit: {credit}', { credit: animal.alt.replace(/^photographer: /, '').split(' - ')[0] })}`}
               />
               <AnimatedHeart isSelected={isSelected} />
             </Pressable>

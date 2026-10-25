@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { LocalizationProvider } from '@/lib/localization';
 import { DraftsProvider } from '@/lib/form-drafts';
 import { Nav } from '@/components/Nav';
 import { KeyboardFormProvider } from '@/components/KeyboardForm';
@@ -38,32 +39,34 @@ export default function RootLayout() {
   }
 
   return (
-    <DraftsProvider>
-      <KeyboardFormProvider>
-        <View style={styles.container}>
-          <StatusBar style="dark" />
-          <Nav />
-          <LinearGradient
-            colors={gradients.background.colors}
-            style={styles.content}
-          >
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: {
-                  backgroundColor: 'transparent',
-                },
-              }}
+    <LocalizationProvider>
+      <DraftsProvider>
+        <KeyboardFormProvider>
+          <View style={styles.container}>
+            <StatusBar style="dark" />
+            <Nav />
+            <LinearGradient
+              colors={gradients.background.colors}
+              style={styles.content}
             >
-              <Stack.Screen name="index" />
-              <Stack.Screen name="success" />
-              <Stack.Screen name="about" />
-              <Stack.Screen name="contact" />
-            </Stack>
-          </LinearGradient>
-        </View>
-      </KeyboardFormProvider>
-    </DraftsProvider>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: {
+                    backgroundColor: 'transparent',
+                  },
+                }}
+              >
+                <Stack.Screen name="index" />
+                <Stack.Screen name="success" />
+                <Stack.Screen name="about" />
+                <Stack.Screen name="contact" />
+              </Stack>
+            </LinearGradient>
+          </View>
+        </KeyboardFormProvider>
+      </DraftsProvider>
+    </LocalizationProvider>
   );
 }
 

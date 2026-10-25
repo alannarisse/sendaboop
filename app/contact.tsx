@@ -1,3 +1,4 @@
+import { useLocalization } from '@/lib/localization';
 import { useState } from 'react';
 import { View, Text, TextInput, Keyboard, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -28,6 +29,7 @@ function RequiredLabel({ text }: { text: string }) {
 }
 
 export default function ContactScreen() {
+  const { t } = useLocalization();
   const { drafts, ready, update, clear } = useDrafts();
   const { name, email, comments } = drafts.contact;
   const setName = (value: string) => update('contact', (draft) => ({ ...draft, name: value }));
@@ -96,7 +98,7 @@ export default function ContactScreen() {
     router.replace('/');
   };
 
-  if (!ready) return <ActivityIndicator accessibilityLabel="Restoring your draft" />;
+  if (!ready) return <ActivityIndicator accessibilityLabel={t("Restoring your draft")} />;
 
   if (submitted) {
     return (
@@ -105,11 +107,9 @@ export default function ContactScreen() {
           <View style={styles.heartWrapper}>
             <HeartIcon size={56} color={colors.primary} />
           </View>
-          <Text style={styles.successTitle}>Message Sent!</Text>
-          <DraftNotice sent />
-          <Text style={styles.successText}>
-            Thank you for reaching out. I&apos;ll get back to you as soon as possible.
-          </Text>
+          <Text style={styles.successTitle}>{t("Message Sent!")}</Text>
+          <DraftNotice />
+          <Text style={styles.successText}>{t("Thank you for reaching out. I'll get back to you as soon as possible.")}</Text>
           <Pressable
             style={({ pressed }) => [
               styles.homeButtonWrapper,
@@ -123,7 +123,7 @@ export default function ContactScreen() {
               end={gradients.buttonPrimary.end}
               style={styles.homeButton}
             >
-              <Text style={styles.homeButtonText}>Back to Home</Text>
+              <Text style={styles.homeButtonText}>{t("Back to Home")}</Text>
             </LinearGradient>
           </Pressable>
         </View>
@@ -135,14 +135,14 @@ export default function ContactScreen() {
 
   return (
     <KeyboardForm style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.pageTitle}>Get in Touch</Text>
+      <Text style={styles.pageTitle}>{t("Get in Touch")}</Text>
       <DraftNotice />
-      <Text style={styles.introParagraph}>Questions? Thoughts? Comments? Wishing for photos of cute birds? Send me (Alanna) an email, I would love to hear from you.</Text>
+      <Text style={styles.introParagraph}>{t("Questions? Thoughts? Comments? Wishing for photos of cute birds? Send me (Alanna) an email, I would love to hear from you.")}</Text>
 
       <View style={styles.card}>
-        <Text style={styles.sectionLabel}>YOUR INFO</Text>
+        <Text style={styles.sectionLabel}>{t("YOUR INFO")}</Text>
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Your name" />
+          <RequiredLabel text={t("Your name")} />
           <TextInput
             style={[styles.input, errors.name && styles.inputError]}
             value={name}
@@ -150,16 +150,16 @@ export default function ContactScreen() {
               setName(text);
               setErrors((prev) => ({ ...prev, name: undefined }));
             }}
-            placeholder="Enter your name"
+            placeholder={t("Enter your name")}
             placeholderTextColor={colors.text.lighter}
             autoCapitalize="words"
             autoCorrect={false}
           />
         </View>
-        {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+        {errors.name && <Text style={styles.errorText}>{t(errors.name)}</Text>}
 
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Your email" />
+          <RequiredLabel text={t("Your email")} />
           <TextInput
             style={[styles.input, errors.email && styles.inputError]}
             value={email}
@@ -174,13 +174,13 @@ export default function ContactScreen() {
             autoCorrect={false}
           />
         </View>
-        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+        {errors.email && <Text style={styles.errorText}>{t(errors.email)}</Text>}
       </View>
 
       <View style={styles.card}>
-        <Text style={styles.sectionLabel}>YOUR MESSAGE</Text>
+        <Text style={styles.sectionLabel}>{t("YOUR MESSAGE")}</Text>
         <View style={styles.inputWrapper}>
-          <RequiredLabel text="Message" />
+          <RequiredLabel text={t("Message")} />
           <TextInput
             style={[styles.input, styles.textArea, errors.comments && styles.inputError]}
             value={comments}
@@ -188,7 +188,7 @@ export default function ContactScreen() {
               setComments(text);
               setErrors((prev) => ({ ...prev, comments: undefined }));
             }}
-            placeholder="What would you like to say?"
+            placeholder={t("What would you like to say?")}
             placeholderTextColor={colors.text.lighter}
             multiline
             numberOfLines={6}
@@ -196,12 +196,12 @@ export default function ContactScreen() {
             textAlignVertical="top"
           />
         </View>
-        {errors.comments && <Text style={styles.errorText}>{errors.comments}</Text>}
+        {errors.comments && <Text style={styles.errorText}>{t(errors.comments)}</Text>}
       </View>
 
       {apiError && (
         <View style={styles.apiErrorContainer}>
-          <Text style={styles.apiErrorText}>{apiError}</Text>
+          <Text style={styles.apiErrorText}>{t(apiError)}</Text>
         </View>
       )}
 
@@ -214,7 +214,7 @@ export default function ContactScreen() {
           onPress={handleCancel}
           disabled={isLoading}
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text style={styles.cancelButtonText}>{t("Cancel")}</Text>
         </Pressable>
         <Pressable
           style={({ pressed }) => [
@@ -233,7 +233,7 @@ export default function ContactScreen() {
             {isLoading ? (
               <ActivityIndicator color={colors.white} size="small" />
             ) : (
-              <Text style={styles.sendButtonText}>Send</Text>
+              <Text style={styles.sendButtonText}>{t("Send")}</Text>
             )}
           </LinearGradient>
         </Pressable>
